@@ -23,6 +23,10 @@ pub fn decode(mut stream: &str) -> Result<ParsedData, String> {
 }
 
 pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String> {
+    if stream.is_empty() {
+        return Ok(None);
+    }
+
     if indexed {
         let selector = &stream[0..1];
         if let "A" | "B" | "C" | "D" = selector {
