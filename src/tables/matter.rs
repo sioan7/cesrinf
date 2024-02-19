@@ -1,7 +1,7 @@
 use crate::decoder::{is_lowercase_letter, is_uppercase_letter};
 
 #[derive(Debug, PartialEq)]
-pub struct Codeage<'a> {
+pub struct MatterCodeage<'a> {
     pub selector: &'a str,
     pub description: &'a str,
     pub hs: usize,
@@ -9,7 +9,7 @@ pub struct Codeage<'a> {
     pub fs: usize,
 }
 
-impl<'a> Codeage<'a> {
+impl<'a> MatterCodeage<'a> {
     pub fn cs(&self) -> usize {
         self.hs + self.ss
     }
@@ -43,72 +43,23 @@ impl<'a> Codeage<'a> {
     }
 }
 
-pub fn codeage_indexed(s: &str) -> Option<Codeage<'static>> {
+pub fn codeage(s: &str) -> Option<MatterCodeage<'static>> {
     Some(match s {
-        "A" => Codeage {
-            selector: "A",
-            description: "Ed25519 indexed signature both same",
-            hs: 1,
-            ss: 1,
-            fs: 88,
-        },
-        "B" => Codeage {
-            selector: "B",
-            description: "Ed25519 indexed signature current only",
-            hs: 1,
-            ss: 1,
-            fs: 88,
-        },
-        "C" => Codeage {
-            selector: "C",
-            description: "ECDSA secp256k1 indexed sig both same",
-            hs: 1,
-            ss: 1,
-            fs: 88,
-        },
-        "D" => Codeage {
-            selector: "D",
-            description: "ECDSA secp256k1 indexed sig current only",
-            hs: 1,
-            ss: 1,
-            fs: 88,
-        },
-        "0A" => Codeage {
-            selector: "0A",
-            description: "Ed448 indexed signature dual",
-            hs: 2,
-            ss: 2,
-            fs: 156,
-        },
-        "0B" => Codeage {
-            selector: "0B",
-            description: "Ed448 indexed signature current only",
-            hs: 2,
-            ss: 2,
-            fs: 156,
-        },
-        // TODO: add all codes
-        _ => return None,
-    })
-}
-
-pub fn codeage(s: &str) -> Option<Codeage<'static>> {
-    Some(match s {
-        "--" => Codeage {
+        "--" => MatterCodeage {
             selector: "--",
             description: "Universal genus version code",
             hs: 3,
             ss: 5,
             fs: 8,
         },
-        "-A" => Codeage {
+        "-A" => MatterCodeage {
             selector: "-A",
             description: "Generic pipeline group up to 4,095 quadlets/triplets",
             hs: 2,
             ss: 2,
             fs: 4,
         },
-        "-0A" => Codeage {
+        "-0A" => MatterCodeage {
             selector: "-0A",
             description: "Generic pipeline group up to 1,073,741,823 quadlets/triplets",
             hs: 3,
@@ -116,362 +67,363 @@ pub fn codeage(s: &str) -> Option<Codeage<'static>> {
             fs: 8,
         },
         // TODO: add the rest of count codes
-        "A" => Codeage {
+        "A" => MatterCodeage {
             selector: "A",
             description: "Seed of Ed25519 private key",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "B" => Codeage {
+        "B" => MatterCodeage {
             selector: "B",
             description: "Ed25519 non-transferable prefix public verification key",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "C" => Codeage {
+        "C" => MatterCodeage {
             selector: "C",
             description: "X25519 public encryption key, may be converted from Ed25519 public key",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "D" => Codeage {
+        "D" => MatterCodeage {
             selector: "D",
             description: "Ed25519 public verification key",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "E" => Codeage {
+        "E" => MatterCodeage {
             selector: "E",
             description: "Blake3-256 Digest",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "F" => Codeage {
+        "F" => MatterCodeage {
             description: "F",
             selector: "Blake2b-256 Digest",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "G" => Codeage {
+        "G" => MatterCodeage {
             description: "G",
             selector: "Blake2s-256 Digest",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "H" => Codeage {
+        "H" => MatterCodeage {
             description: "H",
             selector: "SHA3-256 Digest",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "I" => Codeage {
+        "I" => MatterCodeage {
             description: "I",
             selector: "SHA2-256 Digest",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "J" => Codeage {
+        "J" => MatterCodeage {
             description: "J",
             selector: "Seed of ECDSA secp256k1 private key",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "K" => Codeage {
+        "K" => MatterCodeage {
             description: "K",
             selector: "Seed of Ed448 private key",
             hs: 1,
             ss: 0,
             fs: 76,
         },
-        "L" => Codeage {
+        "L" => MatterCodeage {
             description: "L",
             selector: "X448 public encryption key",
             hs: 1,
             ss: 0,
             fs: 76,
         },
-        "M" => Codeage {
+        "M" => MatterCodeage {
             description: "M",
             selector: "Short number 2-byte b2",
             hs: 1,
             ss: 0,
             fs: 4,
         },
-        "N" => Codeage {
+        "N" => MatterCodeage {
             description: "N",
             selector: "Big number 8-byte b2",
             hs: 1,
             ss: 0,
             fs: 12,
         },
-        "O" => Codeage {
+        "O" => MatterCodeage {
             description: "O",
             selector: "X25519 private decryption key/seed may be converted from Ed25519 key/seed",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "P" => Codeage {
+        // TODO: update the rest of the selectors
+        "P" => MatterCodeage {
             description: "P",
             selector: "P",
             hs: 1,
             ss: 0,
             fs: 124,
         },
-        "Q" => Codeage {
+        "Q" => MatterCodeage {
             description: "Q",
             selector: "Q",
             hs: 1,
             ss: 0,
             fs: 44,
         },
-        "0A" => Codeage {
+        "0A" => MatterCodeage {
             description: "0A",
             selector: "0A",
             hs: 2,
             ss: 0,
             fs: 24,
         },
-        "0B" => Codeage {
+        "0B" => MatterCodeage {
             description: "0B",
             selector: "0B",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0C" => Codeage {
+        "0C" => MatterCodeage {
             description: "0C",
             selector: "0C",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0D" => Codeage {
+        "0D" => MatterCodeage {
             description: "0D",
             selector: "0D",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0E" => Codeage {
+        "0E" => MatterCodeage {
             description: "0E",
             selector: "0E",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0F" => Codeage {
+        "0F" => MatterCodeage {
             description: "0F",
             selector: "0F",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0G" => Codeage {
+        "0G" => MatterCodeage {
             description: "0G",
             selector: "0G",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "0H" => Codeage {
+        "0H" => MatterCodeage {
             description: "0H",
             selector: "0H",
             hs: 2,
             ss: 0,
             fs: 8,
         },
-        "0I" => Codeage {
+        "0I" => MatterCodeage {
             description: "0I",
             selector: "0I",
             hs: 2,
             ss: 0,
             fs: 88,
         },
-        "1AAA" => Codeage {
+        "1AAA" => MatterCodeage {
             description: "1AAA",
             selector: "1AAA",
             hs: 4,
             ss: 0,
             fs: 48,
         },
-        "1AAB" => Codeage {
+        "1AAB" => MatterCodeage {
             description: "1AAB",
             selector: "1AAB",
             hs: 4,
             ss: 0,
             fs: 48,
         },
-        "1AAC" => Codeage {
+        "1AAC" => MatterCodeage {
             description: "1AAC",
             selector: "1AAC",
             hs: 4,
             ss: 0,
             fs: 80,
         },
-        "1AAD" => Codeage {
+        "1AAD" => MatterCodeage {
             description: "1AAD",
             selector: "1AAD",
             hs: 4,
             ss: 0,
             fs: 80,
         },
-        "1AAE" => Codeage {
+        "1AAE" => MatterCodeage {
             description: "1AAE",
             selector: "1AAE",
             hs: 4,
             ss: 0,
             fs: 56,
         },
-        "1AAF" => Codeage {
+        "1AAF" => MatterCodeage {
             description: "1AAF",
             selector: "1AAF",
             hs: 4,
             ss: 0,
             fs: 8,
         },
-        "1AAG" => Codeage {
+        "1AAG" => MatterCodeage {
             description: "1AAG",
             selector: "1AAG",
             hs: 4,
             ss: 0,
             fs: 36,
         },
-        "1AAH" => Codeage {
+        "1AAH" => MatterCodeage {
             description: "1AAH",
             selector: "1AAH",
             hs: 4,
             ss: 0,
             fs: 100,
         },
-        "1AAI" => Codeage {
+        "1AAI" => MatterCodeage {
             description: "1AAI",
             selector: "1AAI",
             hs: 4,
             ss: 0,
             fs: 48,
         },
-        "1AAJ" => Codeage {
+        "1AAJ" => MatterCodeage {
             description: "1AAJ",
             selector: "1AAJ",
             hs: 4,
             ss: 0,
             fs: 48,
         },
-        "2AAA" => Codeage {
+        "2AAA" => MatterCodeage {
             description: "2AAA",
             selector: "2AAA",
             hs: 4,
             ss: 0,
             fs: 8,
         },
-        "3AAA" => Codeage {
+        "3AAA" => MatterCodeage {
             description: "3AAA",
             selector: "3AAA",
             hs: 4,
             ss: 0,
             fs: 8,
         },
-        "4A" => Codeage {
+        "4A" => MatterCodeage {
             description: "4A",
             selector: "4A",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "5A" => Codeage {
+        "5A" => MatterCodeage {
             description: "5A",
             selector: "5A",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "6A" => Codeage {
+        "6A" => MatterCodeage {
             description: "6A",
             selector: "6A",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "7AAA" => Codeage {
+        "7AAA" => MatterCodeage {
             description: "7AAA",
             selector: "7AAA",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "8AAA" => Codeage {
+        "8AAA" => MatterCodeage {
             description: "8AAA",
             selector: "8AAA",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "9AAA" => Codeage {
+        "9AAA" => MatterCodeage {
             description: "9AAA",
             selector: "9AAA",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "4B" => Codeage {
+        "4B" => MatterCodeage {
             description: "4B",
             selector: "4B",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "5B" => Codeage {
+        "5B" => MatterCodeage {
             description: "5B",
             selector: "5B",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "6B" => Codeage {
+        "6B" => MatterCodeage {
             description: "6B",
             selector: "6B",
             hs: 2,
             ss: 2,
             fs: usize::MAX,
         },
-        "7AAB" => Codeage {
+        "7AAB" => MatterCodeage {
             description: "7AAB",
             selector: "7AAB",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "8AAB" => Codeage {
+        "8AAB" => MatterCodeage {
             description: "8AAB",
             selector: "8AAB",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "9AAB" => Codeage {
+        "9AAB" => MatterCodeage {
             description: "9AAB",
             selector: "9AAB",
             hs: 4,
             ss: 4,
             fs: usize::MAX,
         },
-        "_" => Codeage {
+        "_" => MatterCodeage {
             selector: "_",
             description: "TBD",
-            hs: 0,
+            hs: 1,
             ss: 0,
-            fs: 0,
+            fs: 1,
         },
         _ => return None,
     })

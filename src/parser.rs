@@ -62,7 +62,7 @@ impl<'a> Parser<'a> {
 mod tests {
     use rstest::rstest;
 
-    use crate::decoder::Matter;
+    use crate::{decoder::Msg, tables::matter};
 
     use super::*;
 
@@ -71,7 +71,12 @@ mod tests {
     fn test_parsing(#[case] code: &str, #[case] matter: &str) {
         let parser = Parser::new(matter).unwrap();
         let pd = parser.parse().unwrap();
-        assert_eq!(pd.matteri, vec![Matter::E]);
+        assert_eq!(
+            pd.matteri,
+            vec![Msg::Matter {
+                codeage: matter::codeage(code).unwrap(),
+            }]
+        );
         // assert_eq!(codeage(code).unwrap(), pd.codeage);
     }
 }

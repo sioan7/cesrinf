@@ -1,7 +1,7 @@
-pub mod colder;
-pub mod decoder;
-pub mod parser;
-pub mod tables;
+pub(crate) mod colder;
+pub(crate) mod decoder;
+pub(crate) mod parser;
+pub(crate) mod tables;
 
 /// `n` is the length of the raw binary value
 fn compute_pad_size(n: usize) -> usize {

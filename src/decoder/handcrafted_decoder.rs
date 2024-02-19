@@ -1,6 +1,6 @@
-use crate::tables::codeage;
+use crate::tables::{indexer, matter};
 
-use super::{is_digit, is_uppercase_letter, Matter, ParsedData};
+use super::{is_digit, is_uppercase_letter, Msg, ParsedData};
 
 pub fn decode(mut stream: &str) -> Result<ParsedData, String> {
     let mut matteri = vec![];
@@ -22,30 +22,32 @@ pub fn decode(mut stream: &str) -> Result<ParsedData, String> {
     Ok(ParsedData { stream, matteri })
 }
 
-pub fn token(stream: &str, indexed: bool) -> Result<Option<(Matter, &str)>, String> {
+pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String> {
     if indexed {
-        let code = &stream[0..1];
-        if let "A" | "B" | "C" | "D" = code {
+        let selector = &stream[0..1];
+        if let "A" | "B" | "C" | "D" = selector {
+            let codeage = indexer::codeage(selector).unwrap();
             return Ok(None);
         }
 
-        let code = &stream[0..2];
-        if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = code {
+        let selector = &stream[0..2];
+        if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             return Ok(None);
         }
 
-        return Err("code of indexed token didn't match".to_owned());
+        return Err("selector of indexed token didn't match".to_owned());
     }
 
-    let code = &stream[0..1];
-    match code {
+    let selector = &stream[0..1];
+    match selector {
         x if is_uppercase_letter(x) => {
-            let codeage = codeage(x);
-            Ok(None)
+            let codeage = matter::codeage(x).unwrap();
+            let remainder = &stream[codeage.fs..];
+            Ok(Some((Msg::Matter { codeage }, remainder)))
         }
         x if is_digit(x) => Ok(None),
         "-" => Ok(None),
         "_" => Ok(None),
-        _ => Err(format!("unrcognized code {}", code)),
+        _ => Err(format!("unrcognized selector {}", selector)),
     }
 }
