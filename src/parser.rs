@@ -1,4 +1,4 @@
-use crate::{colder::ColdCodex, decoder::handcrafted_decoder, domain::ParsedData};
+use crate::{colder::ColdCodex, decoder::handcrafted_decoder, domain::ParsedData, error::Error};
 
 /// Parser for a CESR stream.
 /// Assume a framed stream.
@@ -7,21 +7,14 @@ pub struct CesrParser<'a> {
 }
 
 impl<'a> CesrParser<'a> {
-    pub fn new(stream: &'a str) -> Result<Self, String> {
+    pub fn new(stream: &'a str) -> Result<Self, Error> {
         // TODO: validation
-        // what would the minimum size for the stream be?
-        // ensure at first at least one byte
-        if stream.is_empty() {
-            return Err("empty stream".to_string());
-        }
-
-        let first_byte = stream
-            .bytes()
-            .next()
-            .expect("dat contains at least one byte");
+        let first_byte = stream.bytes().next().ok_or_else(|| Error::EmptyStream)?;
         let cold_codex = ColdCodex::from(first_byte);
         if let ColdCodex::Free = cold_codex {
-            return Err("cannot parse a stream with a free cold start byte".to_string());
+            return Err(Error::UnsupportedCodeCodex(
+                "cannot parse a stream with a free cold start byte".to_string(),
+            ));
         }
 
         if let ColdCodex::Json
@@ -30,16 +23,16 @@ impl<'a> CesrParser<'a> {
         | ColdCodex::MGPK2
         | ColdCodex::CtOpB2 = cold_codex
         {
-            return Err(format!(
+            return Err(Error::UnsupportedCodeCodex(format!(
                 "this parser only supports text for now but the cold codex was `{}`",
                 cold_codex
-            ));
+            )));
         }
 
         Ok(Self { stream })
     }
 
-    pub fn parse(self) -> Result<ParsedData<'a>, String> {
+    pub fn parse(self) -> Result<ParsedData<'a>, Error<'a>> {
         handcrafted_decoder::decode(self.stream)
     }
 }

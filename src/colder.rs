@@ -24,6 +24,7 @@ impl TryFrom<ColdCodex> for ColdCodexStatus {
     }
 }
 
+#[derive(Copy, Clone, Debug)]
 pub enum ColdCodex {
     /// Not taken
     Free,
