@@ -39,17 +39,6 @@ impl<'a> CesrParser<'a> {
         Ok(Self { stream })
     }
 
-    // pub fn pad_size(&self) -> usize {
-    //     (3 - (self.stream.len() % 3)) % 3
-    // }
-
-    // pub fn minimum_code_size_scaling_factor(&self) -> usize {
-    //     match self.pad_size() {
-    //         0 => 1,
-    //         _ => 0,
-    //     }
-    // }
-
     pub fn parse(self) -> Result<ParsedData<'a>, String> {
         handcrafted_decoder::decode(self.stream)
     }
