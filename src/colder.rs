@@ -16,7 +16,7 @@ impl TryFrom<ColdCodex> for ColdCodexStatus {
         match value {
             ColdCodex::Free => Err("cold codex starting with free bits has no status".to_string()),
             ColdCodex::CtB64 | ColdCodex::OpB64 => Ok(ColdCodexStatus::Txt),
-            ColdCodex::JSON | ColdCodex::MGPK1 | ColdCodex::CBOR | ColdCodex::MGPK2 => {
+            ColdCodex::Json | ColdCodex::MGPK1 | ColdCodex::Cbor | ColdCodex::MGPK2 => {
                 Ok(ColdCodexStatus::Evt)
             }
             ColdCodex::CtOpB2 => Ok(ColdCodexStatus::Bny),
@@ -32,11 +32,11 @@ pub enum ColdCodex {
     /// Op code base64 (text)
     OpB64,
     /// JSON map event start
-    JSON,
+    Json,
     /// MGPK fixed map event start
     MGPK1,
     /// CBOR map event start
-    CBOR,
+    Cbor,
     /// MGPK Big 16 or 32 map event start
     MGPK2,
     /// Count code or op code base2 (binary)
@@ -51,9 +51,9 @@ impl From<u8> for ColdCodex {
             0b000 => Free,
             0b001 => CtB64,
             0b010 => OpB64,
-            0b011 => JSON,
+            0b011 => Json,
             0b100 => MGPK1,
-            0b101 => CBOR,
+            0b101 => Cbor,
             0b110 => MGPK2,
             0b111 => CtOpB2,
             _ => unreachable!("all 8 possibilities of the 3 bits covered"),
@@ -67,9 +67,9 @@ impl Display for ColdCodex {
             ColdCodex::Free => "free",
             ColdCodex::CtB64 => "count code base64 (text)",
             ColdCodex::OpB64 => "op code base64 (text)",
-            ColdCodex::JSON => "JSON map event start",
+            ColdCodex::Json => "JSON map event start",
             ColdCodex::MGPK1 => "MGPK fixed map event start",
-            ColdCodex::CBOR => "CBOR map event start",
+            ColdCodex::Cbor => "CBOR map event start",
             ColdCodex::MGPK2 => "MGPK Big 16 or 32 map event start",
             ColdCodex::CtOpB2 => "count code or op code base2 (binary)",
         };

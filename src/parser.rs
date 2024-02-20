@@ -24,8 +24,8 @@ impl<'a> CesrParser<'a> {
             return Err("cannot parse a stream with a free cold start byte".to_string());
         }
 
-        if let ColdCodex::JSON
-        | ColdCodex::CBOR
+        if let ColdCodex::Json
+        | ColdCodex::Cbor
         | ColdCodex::MGPK1
         | ColdCodex::MGPK2
         | ColdCodex::CtOpB2 = cold_codex

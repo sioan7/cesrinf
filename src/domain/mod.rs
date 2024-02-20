@@ -4,6 +4,8 @@ pub mod matter;
 
 use matter::MatterCodeage;
 
+use self::indexer::IndexerCodeage;
+
 #[derive(Debug)]
 pub struct ParsedData<'a> {
     pub stream: &'a str,
@@ -17,5 +19,8 @@ pub enum Msg<'a> {
         codeage: MatterCodeage<'a>,
         istart: usize,
     },
-    Indexer,
+    Indexer {
+        codeage: IndexerCodeage<'a>,
+        istart: usize,
+    },
 }
