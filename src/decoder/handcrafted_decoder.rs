@@ -35,7 +35,7 @@ fn token(
     }
 
     if indexed {
-        let selector = &stream[0..1];
+        let selector = &stream[..1];
         if let "A" | "B" | "C" | "D" = selector {
             let codeage = indexer::codeage(selector).unwrap();
             let fs = codeage.fs;
@@ -55,7 +55,7 @@ fn token(
             return Err(format!("invalid token `{}`", stream));
         }
 
-        let selector = &stream[0..2];
+        let selector = &stream[..2];
         if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             // TODO: fill with signatures from both indices
             let codeage = indexer::codeage(selector).unwrap();
@@ -75,8 +75,8 @@ fn token(
         return Err("selector of indexed token didn't match".to_owned());
     }
 
-    let selector = &stream[0..1];
-    match selector {
+    let universal_selector = &stream[..1];
+    match universal_selector {
         x if is_uppercase_letter(x) => {
             let codeage = matter::codeage(x).unwrap();
             // TODO: calculate the variable size from ss
@@ -92,9 +92,67 @@ fn token(
                 next_token_start_idx,
             )))
         }
+        "0" => {
+            let selector = &stream[..1];
+            let codeage = matter::codeage(selector).unwrap();
+            let fs = codeage.fs.unwrap_or(stream.len());
+            let next_tokens = &stream[fs..];
+            let next_token_start_idx = token_start_idx + fs;
+            Ok(Some((
+                Msg::Matter {
+                    codeage,
+                    istart: token_start_idx,
+                },
+                next_tokens,
+                next_token_start_idx,
+            )))
+        }
+        "1" => {
+            let selector = &stream[..4];
+            let codeage = matter::codeage(selector).unwrap();
+            let fs = codeage.fs.unwrap_or(stream.len());
+            let next_tokens = &stream[fs..];
+            let next_token_start_idx = token_start_idx + fs;
+            Ok(Some((
+                Msg::Matter {
+                    codeage,
+                    istart: token_start_idx,
+                },
+                next_tokens,
+                next_token_start_idx,
+            )))
+        }
         x if is_digit(x) => Ok(None),
-        "-" => Ok(None),
-        "_" => Ok(None),
-        _ => Err(format!("unrcognized selector {}", selector)),
+        "-" => {
+            let selector = &stream[1..2];
+            match selector {
+                "-" => {
+                    // TODO: this is the version
+                }
+                "0" => {}
+                x if is_uppercase_letter(x) => {}
+                _ => return Err(format!("unrecognized selector {}", &stream[..2])),
+            }
+
+            Ok(None)
+        }
+        "_" => {
+            let codeage = matter::codeage(universal_selector).unwrap();
+            let fs = codeage.fs.unwrap_or(stream.len());
+            let next_tokens = &stream[fs..];
+            let next_token_start_idx = token_start_idx + fs;
+            Ok(Some((
+                Msg::Matter {
+                    codeage,
+                    istart: token_start_idx,
+                },
+                next_tokens,
+                next_token_start_idx,
+            )))
+        }
+        _ => Err(format!(
+            "unrecognized universal selector {}",
+            universal_selector
+        )),
     }
 }
