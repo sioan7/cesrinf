@@ -2,24 +2,25 @@ use crate::tables::{indexer, matter};
 
 use super::{is_digit, is_uppercase_letter, Msg, ParsedData};
 
-pub fn decode(mut stream: &str) -> Result<ParsedData, String> {
-    let mut matteri = vec![];
+pub fn decode(stream: &str) -> Result<ParsedData, String> {
+    let mut msgs = vec![];
+    let mut remainder = stream;
     loop {
-        let possible_token = match token(stream, false) {
+        let possible_token = match token(remainder, false) {
             Ok(t) => t,
             Err(e) => return Err(format!("error parsing token: {e}")),
         };
 
         match possible_token {
-            Some((matter, remainder)) => {
-                matteri.push(matter);
-                stream = remainder;
+            Some((matter, r)) => {
+                msgs.push(matter);
+                remainder = r;
             }
             None => break,
         }
     }
 
-    Ok(ParsedData { stream, matteri })
+    Ok(ParsedData { stream, msgs })
 }
 
 pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String> {
@@ -34,6 +35,7 @@ pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String>
             return Ok(None);
         }
 
+        // TODO: validate index `1`
         let selector = &stream[0..2];
         if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             return Ok(None);
@@ -47,7 +49,7 @@ pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String>
         x if is_uppercase_letter(x) => {
             let codeage = matter::codeage(x).unwrap();
             let remainder = &stream[codeage.fs..];
-            Ok(Some((Msg::Matter { codeage }, remainder)))
+            Ok(Some((Msg::Matter { codeage, istart: 0 }, remainder)))
         }
         x if is_digit(x) => Ok(None),
         "-" => Ok(None),

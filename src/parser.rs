@@ -5,11 +5,11 @@ use crate::{
 
 /// Parser for a CESR stream.
 /// Assume a framed stream.
-pub struct Parser<'a> {
+pub struct CesrParser<'a> {
     stream: &'a str,
 }
 
-impl<'a> Parser<'a> {
+impl<'a> CesrParser<'a> {
     pub fn new(stream: &'a str) -> Result<Self, String> {
         // TODO: validation
         // what would the minimum size for the stream be?
@@ -69,12 +69,13 @@ mod tests {
     #[rstest]
     #[case("E", "EBdXt3gIXOf2BBWNHdSXCJnFJL5OuQPyM5K0neuniccM")]
     fn test_parsing(#[case] code: &str, #[case] matter: &str) {
-        let parser = Parser::new(matter).unwrap();
+        let parser = CesrParser::new(matter).unwrap();
         let pd = parser.parse().unwrap();
         assert_eq!(
-            pd.matteri,
+            pd.msgs,
             vec![Msg::Matter {
                 codeage: matter::codeage(code).unwrap(),
+                istart: 0,
             }]
         );
         // assert_eq!(codeage(code).unwrap(), pd.codeage);

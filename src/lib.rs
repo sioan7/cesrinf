@@ -1,6 +1,9 @@
+pub mod parser;
+
+pub use parser::CesrParser;
+
 pub(crate) mod colder;
 pub(crate) mod decoder;
-pub(crate) mod parser;
 pub(crate) mod tables;
 
 /// `n` is the length of the raw binary value

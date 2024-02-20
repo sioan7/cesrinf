@@ -2,15 +2,19 @@ use crate::tables::matter::MatterCodeage;
 
 pub mod handcrafted_decoder;
 
+#[derive(Debug)]
 pub struct ParsedData<'a> {
     pub stream: &'a str,
-    pub matteri: Vec<Msg<'a>>,
+    pub msgs: Vec<Msg<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub enum Msg<'a> {
     Counter,
-    Matter { codeage: MatterCodeage<'a> },
+    Matter {
+        codeage: MatterCodeage<'a>,
+        istart: usize,
+    },
     Indexer,
 }
 
