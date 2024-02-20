@@ -1,15 +1,24 @@
-use crate::domain::{indexer, matter, Msg, ParsedData};
+use crate::{
+    domain::{indexer, matter, Msg, ParsedData},
+    error::Error,
+};
 
 use super::{is_digit, is_uppercase_letter};
 
-pub fn decode(stream: &str) -> Result<ParsedData, String> {
+pub fn decode(stream: &str) -> Result<ParsedData, Error> {
     let mut msgs = vec![];
     let mut next_tokens = stream;
     let mut next_token_start_idx: usize = 0;
     loop {
         let maybe_token = match token(next_tokens, next_token_start_idx, false) {
             Ok(t) => t,
-            Err(e) => return Err(format!("error parsing token: {e}")),
+            Err(e) => {
+                return Err(Error::DecodeFailure {
+                    stream: stream.to_owned(),
+                    decoded_msgs: msgs,
+                    cause: Box::new(e),
+                })
+            }
         };
 
         match maybe_token {
@@ -29,7 +38,7 @@ fn token(
     stream: &str,
     token_start_idx: usize,
     indexed: bool,
-) -> Result<Option<(Msg, &str, usize)>, String> {
+) -> Result<Option<(Msg, &str, usize)>, Error> {
     if stream.is_empty() {
         return Ok(None);
     }
@@ -52,7 +61,10 @@ fn token(
         }
 
         if stream.len() < 2 {
-            return Err(format!("invalid token `{}`", stream));
+            return Err(Error::InvalidStream {
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            });
         }
 
         let selector = &stream[..2];
@@ -72,7 +84,10 @@ fn token(
             )));
         }
 
-        return Err("selector of indexed token didn't match".to_owned());
+        return Err(Error::InvalidSelector {
+            stream_remainder: stream.to_owned(),
+            token_start_idx,
+        });
     }
 
     let universal_selector = &stream[..1];
@@ -131,7 +146,12 @@ fn token(
                 }
                 "0" => {}
                 x if is_uppercase_letter(x) => {}
-                _ => return Err(format!("unrecognized selector {}", &stream[..2])),
+                _ => {
+                    return Err(Error::InvalidSelector {
+                        stream_remainder: stream.to_owned(),
+                        token_start_idx,
+                    })
+                }
             }
 
             Ok(None)
@@ -150,9 +170,9 @@ fn token(
                 next_token_start_idx,
             )))
         }
-        _ => Err(format!(
-            "unrecognized universal selector {}",
-            universal_selector
-        )),
+        _ => Err(Error::InvalidSelector {
+            stream_remainder: stream.to_owned(),
+            token_start_idx,
+        }),
     }
 }
