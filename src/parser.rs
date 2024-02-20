@@ -1,7 +1,4 @@
-use crate::{
-    colder::ColdCodex,
-    decoder::{handcrafted_decoder, ParsedData},
-};
+use crate::{colder::ColdCodex, decoder::handcrafted_decoder, domain::ParsedData};
 
 /// Parser for a CESR stream.
 /// Assume a framed stream.
@@ -62,7 +59,7 @@ impl<'a> CesrParser<'a> {
 mod tests {
     use rstest::rstest;
 
-    use crate::{decoder::Msg, tables::matter};
+    use crate::domain::matter;
 
     use super::*;
 
@@ -73,7 +70,7 @@ mod tests {
         let pd = parser.parse().unwrap();
         assert_eq!(
             pd.msgs,
-            vec![Msg::Matter {
+            vec![crate::domain::Msg::Matter {
                 codeage: matter::codeage(code).unwrap(),
                 istart: 0,
             }]

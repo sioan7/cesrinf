@@ -1,6 +1,6 @@
-use crate::tables::{indexer, matter};
+use crate::domain::{indexer, matter, Msg, ParsedData};
 
-use super::{is_digit, is_uppercase_letter, Msg, ParsedData};
+use super::{is_digit, is_uppercase_letter};
 
 pub fn decode(stream: &str) -> Result<ParsedData, String> {
     let mut msgs = vec![];
@@ -23,7 +23,7 @@ pub fn decode(stream: &str) -> Result<ParsedData, String> {
     Ok(ParsedData { stream, msgs })
 }
 
-pub fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String> {
+fn token(stream: &str, indexed: bool) -> Result<Option<(Msg, &str)>, String> {
     if stream.is_empty() {
         return Ok(None);
     }

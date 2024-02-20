@@ -1,22 +1,4 @@
-use crate::tables::matter::MatterCodeage;
-
 pub mod handcrafted_decoder;
-
-#[derive(Debug)]
-pub struct ParsedData<'a> {
-    pub stream: &'a str,
-    pub msgs: Vec<Msg<'a>>,
-}
-
-#[derive(Debug, PartialEq)]
-pub enum Msg<'a> {
-    Counter,
-    Matter {
-        codeage: MatterCodeage<'a>,
-        istart: usize,
-    },
-    Indexer,
-}
 
 pub fn is_uppercase_letter(x: &str) -> bool {
     matches!(
