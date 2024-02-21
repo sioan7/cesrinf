@@ -1,3 +1,4 @@
+pub(crate) mod base62;
 pub(crate) mod colder;
 pub(crate) mod computations;
 pub(crate) mod decoder;

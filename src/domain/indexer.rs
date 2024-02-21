@@ -4,29 +4,38 @@ use crate::decoder::{is_lowercase_letter, is_uppercase_letter};
 pub struct IndexerCodeage<'a> {
     pub selector: &'a str,
     pub description: &'a str,
+    /// hard size in chars (fixed) part of code size
     pub hs: usize,
+    /// soft size in chars, (Variable) part of code size
     pub ss: usize,
+    /// other size in chars, when soft part includes two Variable values
     pub os: usize,
+    /// full size in chars where fs = hs + ss + vs
     pub fs: usize,
 }
 
 impl<'a> IndexerCodeage<'a> {
+    /// code size in chars (derived value), where cs = hs + ss
     pub fn cs(&self) -> usize {
         self.hs + self.ss
     }
 
+    /// value size in chars
     pub fn vs(&self) -> usize {
         self.fs - self.hs - self.ss
     }
 
+    /// main size in chars, (derived) when soft part provides two Variable values where ms = ss – os
     pub fn ms(&self) -> usize {
         self.ss - self.os
     }
 
+    /// lead size in bytes to pre-pad raw binary bytes
     pub fn ls(&self) -> usize {
         0
     }
 
+    /// pad size in chars Base64 encoded
     pub fn ps(&self) -> usize {
         let universal_selector = &self.selector[0..1];
         match universal_selector {

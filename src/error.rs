@@ -2,15 +2,22 @@ use colored::Colorize;
 
 use crate::domain::Msg;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Error<'a> {
     EmptyStream,
     UnsupportedCodeCodex(String),
+    InvalidCountChar(char),
+    InvalidCountNum(usize),
     InvalidSelector {
         stream_remainder: String,
         token_start_idx: usize,
     },
     InvalidStream {
+        stream_remainder: String,
+        token_start_idx: usize,
+    },
+    SelectorNotFound {
+        selector: String,
         stream_remainder: String,
         token_start_idx: usize,
     },
@@ -29,6 +36,8 @@ impl<'a> std::fmt::Display for Error<'a> {
         match self {
             EmptyStream => write!(f, "empty stream"),
             UnsupportedCodeCodex(msg) => write!(f, "{msg}"),
+            InvalidCountChar(c) => write!(f, "invalid count char `{}`", c.to_string().red()),
+            InvalidCountNum(c) => write!(f, "invalid count number `{}`", c.to_string().red()),
             InvalidSelector {
                 stream_remainder,
                 token_start_idx,
@@ -44,6 +53,17 @@ impl<'a> std::fmt::Display for Error<'a> {
             } => write!(
                 f,
                 "invalid remainig stream at index {}: `{}`",
+                token_start_idx.to_string().yellow(),
+                stream_remainder.red(),
+            ),
+            SelectorNotFound {
+                selector,
+                stream_remainder,
+                token_start_idx,
+            } => write!(
+                f,
+                "wrong `{}` selector or not supported\nat index {} with remaining stream `{}`",
+                selector.red(),
                 token_start_idx.to_string().yellow(),
                 stream_remainder.red(),
             ),

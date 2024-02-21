@@ -46,7 +46,11 @@ fn token(
     if indexed {
         let selector = &stream[..1];
         if let "A" | "B" | "C" | "D" = selector {
-            let codeage = indexer::codeage(selector).unwrap();
+            let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                selector: selector.to_string(),
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let fs = codeage.fs;
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
@@ -70,7 +74,11 @@ fn token(
         let selector = &stream[..2];
         if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             // TODO: fill with signatures from both indices
-            let codeage = indexer::codeage(selector).unwrap();
+            let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                selector: selector.to_string(),
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let fs = codeage.fs;
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
@@ -93,7 +101,11 @@ fn token(
     let universal_selector = &stream[..1];
     match universal_selector {
         x if is_uppercase_letter(x) => {
-            let codeage = matter::codeage(x).unwrap();
+            let codeage = matter::codeage(x).ok_or_else(|| Error::SelectorNotFound {
+                selector: universal_selector.to_string(),
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             // TODO: calculate the variable size from ss
             let fs = codeage.fs.unwrap_or(stream.len());
             let next_tokens = &stream[fs..];
@@ -109,7 +121,11 @@ fn token(
         }
         "0" => {
             let selector = &stream[..1];
-            let codeage = matter::codeage(selector).unwrap();
+            let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                selector: selector.to_string(),
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let fs = codeage.fs.unwrap_or(stream.len());
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
@@ -124,7 +140,11 @@ fn token(
         }
         "1" => {
             let selector = &stream[..4];
-            let codeage = matter::codeage(selector).unwrap();
+            let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                selector: selector.to_string(),
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let fs = codeage.fs.unwrap_or(stream.len());
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
@@ -144,8 +164,19 @@ fn token(
                 "-" => {
                     // TODO: this is the version
                 }
-                "0" => {}
-                x if is_uppercase_letter(x) => {}
+                x if x == "0" || is_uppercase_letter(x) => {
+                    let selector = if x == "0" { &stream[..3] } else { &stream[..2] };
+                    let codeage =
+                        matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                            selector: selector.to_string(),
+                            stream_remainder: stream.to_owned(),
+                            token_start_idx,
+                        })?;
+                    // TODO: implement
+                    let vs = codeage.vs().expect("value size always exists");
+                    let count_start_idx = selector.len();
+                    let count = &stream[count_start_idx..(count_start_idx + vs)];
+                }
                 _ => {
                     return Err(Error::InvalidSelector {
                         stream_remainder: stream.to_owned(),
@@ -157,7 +188,12 @@ fn token(
             Ok(None)
         }
         "_" => {
-            let codeage = matter::codeage(universal_selector).unwrap();
+            let codeage =
+                matter::codeage(universal_selector).ok_or_else(|| Error::SelectorNotFound {
+                    selector: universal_selector.to_string(),
+                    stream_remainder: stream.to_owned(),
+                    token_start_idx,
+                })?;
             let fs = codeage.fs.unwrap_or(stream.len());
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;

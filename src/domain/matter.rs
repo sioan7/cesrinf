@@ -4,20 +4,26 @@ use crate::decoder::{is_lowercase_letter, is_uppercase_letter};
 pub struct MatterCodeage<'a> {
     pub selector: &'a str,
     pub description: &'a str,
+    /// hard size in chars (fixed) part of code size
     pub hs: usize,
+    /// soft size in chars, (Variable) part of code size
     pub ss: usize,
+    /// full size in chars where fs = hs + ss + vs
     pub fs: Option<usize>,
 }
 
 impl<'a> MatterCodeage<'a> {
+    /// code size in chars (derived value), where cs = hs + ss
     pub fn cs(&self) -> usize {
         self.hs + self.ss
     }
 
+    /// value size in chars
     pub fn vs(&self) -> Option<usize> {
         Some(self.fs? - self.hs - self.ss)
     }
 
+    /// lead size in bytes to pre-pad raw binary bytes
     pub fn ls(&self) -> usize {
         let universal_selector = &self.selector[0..1];
         match universal_selector {
@@ -30,6 +36,7 @@ impl<'a> MatterCodeage<'a> {
         }
     }
 
+    /// pad size in chars Base64 encoded
     pub fn ps(&self) -> usize {
         let universal_selector = &self.selector[0..1];
         match universal_selector {
