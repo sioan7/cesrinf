@@ -1,4 +1,5 @@
 use crate::{
+    base62::TryFromBase62,
     domain::{indexer, matter, Msg, ParsedData},
     error::Error,
 };
@@ -163,6 +164,7 @@ fn token(
             match selector {
                 "-" => {
                     // TODO: this is the version
+                    Ok(None)
                 }
                 x if x == "0" || is_uppercase_letter(x) => {
                     let selector = if x == "0" { &stream[..3] } else { &stream[..2] };
@@ -173,19 +175,39 @@ fn token(
                             token_start_idx,
                         })?;
                     // TODO: implement
+                    let fs = codeage.fs.unwrap();
                     let vs = codeage.vs().expect("value size always exists");
                     let count_start_idx = selector.len();
                     let count = &stream[count_start_idx..(count_start_idx + vs)];
-                }
-                _ => {
-                    return Err(Error::InvalidSelector {
-                        stream_remainder: stream.to_owned(),
-                        token_start_idx,
-                    })
-                }
-            }
+                    let count = usize::try_from_base62(count)?;
 
-            Ok(None)
+                    let mut msgs: Vec<Msg<'_>> = Vec::with_capacity(count);
+                    let mut nts = &stream[fs..];
+                    let mut ntsi = token_start_idx + fs;
+                    for i in 0..count {
+                        let tk = token(nts, ntsi, true)?;
+                        let Some((msg, next_tokens, next_token_start_idx)) = tk else {
+                            todo!("return error because of premature termination")
+                        };
+                        msgs.push(msg);
+                        nts = next_tokens;
+                        ntsi = next_token_start_idx;
+                    }
+
+                    Ok(Some((
+                        Msg::Matter {
+                            codeage,
+                            istart: token_start_idx,
+                        },
+                        nts,
+                        ntsi,
+                    )))
+                }
+                _ => Err(Error::InvalidSelector {
+                    stream_remainder: stream.to_owned(),
+                    token_start_idx,
+                }),
+            }
         }
         "_" => {
             let codeage =
