@@ -107,8 +107,9 @@ fn token(
                 stream_remainder: stream.to_owned(),
                 token_start_idx,
             })?;
-            // TODO: calculate the variable size from ss
-            let fs = codeage.fs.unwrap_or(stream.len());
+            let fs = codeage
+                .fs
+                .expect("fs is always defined for capital selectors");
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
             Ok(Some((
@@ -128,7 +129,9 @@ fn token(
                 stream_remainder: stream.to_owned(),
                 token_start_idx,
             })?;
-            let fs = codeage.fs.unwrap_or(stream.len());
+            let fs = codeage
+                .fs
+                .expect("fs is always defined for leading '0' selectors");
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
             Ok(Some((
@@ -148,7 +151,9 @@ fn token(
                 stream_remainder: stream.to_owned(),
                 token_start_idx,
             })?;
-            let fs = codeage.fs.unwrap_or(stream.len());
+            let fs = codeage
+                .fs
+                .expect("fs is always defined for leading '1' selectors");
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
             Ok(Some((
@@ -161,7 +166,10 @@ fn token(
                 next_token_start_idx,
             )))
         }
-        x if is_digit(x) => Ok(None),
+        x if is_digit(x) => {
+            // TODO: implement
+            Ok(None)
+        }
         "-" => {
             let selector = &stream[1..=1];
             match selector {
@@ -182,7 +190,9 @@ fn token(
                             token_start_idx,
                         })?;
                     // TODO: implement
-                    let fs = codeage.fs.unwrap();
+                    let fs = codeage
+                        .fs
+                        .expect("fs is always defined for leading '-' selectors");
                     let count_start_idx = selector.len();
                     let count = &stream[count_start_idx..(count_start_idx + codeage.ss)];
                     let count =
@@ -230,7 +240,7 @@ fn token(
                     stream_remainder: stream.to_owned(),
                     token_start_idx,
                 })?;
-            let fs = codeage.fs.unwrap_or(stream.len());
+            let fs = codeage.fs.expect("fs is always defined for '_' selector");
             let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
             Ok(Some((
