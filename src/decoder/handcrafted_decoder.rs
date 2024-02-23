@@ -1,5 +1,5 @@
 use crate::{
-    base62::TryFromBase62,
+    base64_conversions::TryFromBase64,
     domain::{indexer, matter, Msg, ParsedData},
     error::Error,
 };
@@ -182,7 +182,7 @@ fn token(
                     let count_start_idx = selector.len();
                     let count = &stream[count_start_idx..(count_start_idx + codeage.ss)];
                     let count =
-                        usize::try_from_base62(count).map_err(|_| Error::InvalidCountStream {
+                        usize::try_from_base64(count).map_err(|_| Error::InvalidCountStream {
                             selector: selector.to_owned(),
                             count_stream: count.to_owned(),
                             token_start_idx,

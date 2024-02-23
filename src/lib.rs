@@ -1,4 +1,4 @@
-pub(crate) mod base62;
+pub(crate) mod base64_conversions;
 pub(crate) mod colder;
 pub(crate) mod computations;
 pub(crate) mod decoder;
