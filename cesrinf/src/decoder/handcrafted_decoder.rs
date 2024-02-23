@@ -45,7 +45,7 @@ fn token(
     }
 
     if indexed {
-        let selector = &stream[..1];
+        let selector = &stream[..=0];
         if let "A" | "B" | "C" | "D" = selector {
             let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
@@ -72,7 +72,7 @@ fn token(
             });
         }
 
-        let selector = &stream[..2];
+        let selector = &stream[..=1];
         if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             // TODO: fill with signatures from both indices
             let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
@@ -99,7 +99,7 @@ fn token(
         });
     }
 
-    let universal_selector = &stream[..1];
+    let universal_selector = &stream[..=0];
     match universal_selector {
         x if is_uppercase_letter(x) => {
             let codeage = matter::codeage(x).ok_or_else(|| Error::SelectorNotFound {
@@ -122,7 +122,7 @@ fn token(
             )))
         }
         "0" => {
-            let selector = &stream[..1];
+            let selector = &stream[..=1];
             let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
                 stream_remainder: stream.to_owned(),
@@ -142,7 +142,7 @@ fn token(
             )))
         }
         "1" => {
-            let selector = &stream[..4];
+            let selector = &stream[..=3];
             let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
                 stream_remainder: stream.to_owned(),
@@ -163,14 +163,18 @@ fn token(
         }
         x if is_digit(x) => Ok(None),
         "-" => {
-            let selector = &stream[1..2];
+            let selector = &stream[1..=1];
             match selector {
                 "-" => {
                     // TODO: this is the version
                     Ok(None)
                 }
                 x if x == "0" || is_uppercase_letter(x) => {
-                    let selector = if x == "0" { &stream[..3] } else { &stream[..2] };
+                    let selector = if x == "0" {
+                        &stream[..=2]
+                    } else {
+                        &stream[..=1]
+                    };
                     let codeage =
                         matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                             selector: selector.to_string(),
@@ -191,8 +195,10 @@ fn token(
                     let mut msgs: Vec<Msg<'_>> = Vec::with_capacity(count);
                     let mut nts = &stream[fs..];
                     let mut ntsi = token_start_idx + fs;
-                    for i in 0..count {
-                        let tk = token(nts, ntsi, true)?;
+                    for _ in 0..count {
+                        let is_indexed =
+                            matches!(selector, "-A" | "-0A" | "-B" | "-0B" | "-C" | "-0C");
+                        let tk = token(nts, ntsi, is_indexed)?;
                         let Some((msg, next_tokens, next_token_start_idx)) = tk else {
                             todo!("return error because of premature termination")
                         };

@@ -1,7 +1,15 @@
 use cesrinf::{domain::Msg, CesrParser};
 
 pub fn parse(stream: &str) -> Vec<Msg> {
-    CesrParser::new(stream).unwrap().parse().unwrap().msgs
+    let parser = match CesrParser::new(stream) {
+        Ok(x) => x,
+        Err(e) => panic!("{:#?}", e),
+    };
+    let pd = match parser.parse() {
+        Ok(x) => x,
+        Err(e) => panic!("{:#?}", e),
+    };
+    pd.msgs
 }
 
 /// A tree of codes.

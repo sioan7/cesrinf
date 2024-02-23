@@ -1,3 +1,6 @@
+// Allow not using these functions for now.
+#![allow(dead_code)]
+
 /// `n` is the length of the raw binary value
 pub fn compute_pad_size(n: usize) -> usize {
     (3 - (n % 3)) % 3
