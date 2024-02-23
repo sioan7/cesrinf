@@ -2,7 +2,7 @@ use std::io;
 
 use clap::Parser;
 
-use cesrinfo::CesrParser;
+use cesrinf::CesrParser;
 
 fn main() -> io::Result<()> {
     // https://trustoverip.github.io/tswg-cesr-specification/#stream-parsing-rules

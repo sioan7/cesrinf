@@ -1,4 +1,4 @@
-use cesrinfo::{domain::Msg, CesrParser};
+use cesrinf::{domain::Msg, CesrParser};
 
 pub fn parse(stream: &str) -> Vec<Msg> {
     CesrParser::new(stream).unwrap().parse().unwrap().msgs
