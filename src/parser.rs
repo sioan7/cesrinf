@@ -55,6 +55,7 @@ mod tests {
             vec![crate::domain::Msg::Matter {
                 codeage: matter::codeage(code).unwrap(),
                 istart: 0,
+                indexed: None,
             }]
         );
         // assert_eq!(codeage(code).unwrap(), pd.codeage);

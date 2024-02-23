@@ -18,6 +18,7 @@ pub enum Msg<'a> {
     Matter {
         codeage: MatterCodeage<'a>,
         istart: usize,
+        indexed: Option<Vec<Msg<'a>>>,
     },
     Indexer {
         codeage: IndexerCodeage<'a>,

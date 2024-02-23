@@ -8,6 +8,11 @@ pub enum Error<'a> {
     UnsupportedCodeCodex(String),
     InvalidCountChar(char),
     InvalidCountNum(usize),
+    InvalidCountStream {
+        selector: String,
+        count_stream: String,
+        token_start_idx: usize,
+    },
     InvalidSelector {
         stream_remainder: String,
         token_start_idx: usize,
@@ -38,6 +43,17 @@ impl<'a> std::fmt::Display for Error<'a> {
             UnsupportedCodeCodex(msg) => write!(f, "{msg}"),
             InvalidCountChar(c) => write!(f, "invalid count char `{}`", c.to_string().red()),
             InvalidCountNum(c) => write!(f, "invalid count number `{}`", c.to_string().red()),
+            InvalidCountStream {
+                selector,
+                count_stream,
+                token_start_idx,
+            } => write!(
+                f,
+                "invalid count stream `{}` for selector `{}` at index `{}`",
+                count_stream.red(),
+                selector.yellow(),
+                token_start_idx.to_string().yellow(),
+            ),
             InvalidSelector {
                 stream_remainder,
                 token_start_idx,

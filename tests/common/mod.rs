@@ -18,13 +18,20 @@ pub struct CTree<'a> {
 pub fn flatten_codes_recursively(msgs: Vec<Msg>) -> Vec<CTree> {
     let mut trees = Vec::new();
     for msg in msgs {
-        let (s, i) = match msg {
+        let (s, i, m) = match msg {
             Msg::Counter => todo!(),
-            Msg::Matter { codeage, istart } => (codeage.selector, istart),
-            Msg::Indexer { codeage, istart } => (codeage.selector, istart),
+            Msg::Matter {
+                codeage,
+                istart,
+                indexed,
+            } => (codeage.selector, istart, indexed),
+            Msg::Indexer { codeage, istart } => (codeage.selector, istart, None),
         };
-        trees.push(CTree { s, i, m: None })
-        // TODO: support indexed messages
+        trees.push(CTree {
+            s,
+            i,
+            m: m.map(flatten_codes_recursively),
+        })
     }
     trees
 }

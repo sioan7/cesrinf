@@ -115,6 +115,7 @@ fn token(
                 Msg::Matter {
                     codeage,
                     istart: token_start_idx,
+                    indexed: None,
                 },
                 next_tokens,
                 next_token_start_idx,
@@ -134,6 +135,7 @@ fn token(
                 Msg::Matter {
                     codeage,
                     istart: token_start_idx,
+                    indexed: None,
                 },
                 next_tokens,
                 next_token_start_idx,
@@ -153,6 +155,7 @@ fn token(
                 Msg::Matter {
                     codeage,
                     istart: token_start_idx,
+                    indexed: None,
                 },
                 next_tokens,
                 next_token_start_idx,
@@ -176,10 +179,14 @@ fn token(
                         })?;
                     // TODO: implement
                     let fs = codeage.fs.unwrap();
-                    let vs = codeage.vs().expect("value size always exists");
                     let count_start_idx = selector.len();
-                    let count = &stream[count_start_idx..(count_start_idx + vs)];
-                    let count = usize::try_from_base62(count)?;
+                    let count = &stream[count_start_idx..(count_start_idx + codeage.ss)];
+                    let count =
+                        usize::try_from_base62(count).map_err(|_| Error::InvalidCountStream {
+                            selector: selector.to_owned(),
+                            count_stream: count.to_owned(),
+                            token_start_idx,
+                        })?;
 
                     let mut msgs: Vec<Msg<'_>> = Vec::with_capacity(count);
                     let mut nts = &stream[fs..];
@@ -198,6 +205,7 @@ fn token(
                         Msg::Matter {
                             codeage,
                             istart: token_start_idx,
+                            indexed: Some(msgs),
                         },
                         nts,
                         ntsi,
@@ -223,6 +231,7 @@ fn token(
                 Msg::Matter {
                     codeage,
                     istart: token_start_idx,
+                    indexed: None,
                 },
                 next_tokens,
                 next_token_start_idx,
