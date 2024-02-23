@@ -14,6 +14,10 @@ mod common;
     "AKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgzAKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgz"
 )]
 #[case(
+    &[CTree { s: "B", i: 0, m: None}],
+    "BKxy2sgzfplyr-tgwIxS19f2OchFHtLwPWD3v4oYimBx"
+)]
+#[case(
     &[CTree { s: "D", i: 0, m: None}],
     "DFs8BBx86uytIM0D2BhsE5rrqVIT8ef8mflpNceHo4XH"
 )]
@@ -53,6 +57,10 @@ mod common;
 #[case(
     &[CTree { s: "1AAJ", i: 0, m: None}],
     "1AAJA3cK_P2CDlh-_EMFPvyqTPI1POkw-dr14DANx5JEXDCZ"
+)]
+#[case(
+    &[CTree { s: "1AAG", i: 0, m: None}],
+    "1AAG2020-08-22T17c50c09d988921p00c00"
 )]
 // TODO: add support for digit selectors
 // #[case(
