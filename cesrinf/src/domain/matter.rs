@@ -341,7 +341,6 @@ pub fn codeage(s: &str) -> Option<MatterCodeage<'static>> {
             ss: 0,
             fs: Some(44),
         },
-        // TODO: complete next codes
         "0A" => MatterCodeage {
             selector: "0A",
             description: "Random salt, seed, nonce, private key, or sequence number of length 128 bits",
@@ -350,22 +349,22 @@ pub fn codeage(s: &str) -> Option<MatterCodeage<'static>> {
             fs: Some(24),
         },
         "0B" => MatterCodeage {
-            selector: "Ed25519 signature",
-            description: "0B",
+            selector: "0B",
+            description: "Ed25519 signature",
             hs: 2,
             ss: 0,
             fs: Some(88),
         },
         "0C" => MatterCodeage {
-            selector: "ECDSA secp256k1 signature",
-            description: "0C",
+            selector: "0C",
+            description: "ECDSA secp256k1 signature",
             hs: 2,
             ss: 0,
             fs: Some(88),
         },
         "0D" => MatterCodeage {
-            selector: "Blake3-512 Digest",
-            description: "0D",
+            selector: "0D",
+            description: "Blake3-512 Digest",
             hs: 2,
             ss: 0,
             fs: Some(88),

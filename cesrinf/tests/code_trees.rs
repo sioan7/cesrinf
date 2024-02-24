@@ -6,6 +6,14 @@ mod common;
 
 #[rstest]
 #[case(
+    &[CTree { s: "--", i: 0, m: None}],
+    "--AAABAA"
+)]
+#[case(
+    &[CTree { s: "--", i: 0, m: None}],
+    "--AAACAA"
+)]
+#[case(
     &[CTree { s: "A", i: 0, m: None}],
     "AJ97qKeoQzmWJvqxmeuqIMQbRxHErlNBUsm9BJ2FKX6T"
 )]

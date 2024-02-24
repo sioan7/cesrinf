@@ -175,7 +175,27 @@ fn token(
             match selector {
                 "-" => {
                     // TODO: this is the version
-                    Ok(None)
+                    let selector = &stream[..=1];
+                    let codeage =
+                        matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
+                            selector: selector.to_string(),
+                            stream_remainder: stream.to_owned(),
+                            token_start_idx,
+                        })?;
+                    let fs = codeage
+                        .fs
+                        .expect("fs is always defined for the '--' selector");
+                    let next_tokens = &stream[fs..];
+                    let next_token_start_idx = token_start_idx + fs;
+                    Ok(Some((
+                        Msg::Matter {
+                            codeage,
+                            istart: token_start_idx,
+                            indexed: None,
+                        },
+                        next_tokens,
+                        next_token_start_idx,
+                    )))
                 }
                 x if x == "0" || is_uppercase_letter(x) => {
                     let selector = if x == "0" {
