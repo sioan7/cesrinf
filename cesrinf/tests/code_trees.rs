@@ -39,6 +39,22 @@ mod common;
         EBdXt3gIXOf2BBWNHdSXCJnFJL5OuQPyM5K0neuniccM"
 )]
 #[case(
+    &[CTree { s: "F", i: 0, m: None}],
+    "FIB_G6cxR8OpbC1js43VpfUU9mKQoUNruYIenypy7_Jj"
+)]
+#[case(
+    &[CTree { s: "G", i: 0, m: None}],
+    "GDadJwsilx1z1cK6TpVqnwIRDlaRfhGDPmG3DpczSm0g"
+)]
+#[case(
+    &[CTree { s: "H", i: 0, m: None}],
+    "HAHaiEPpdpE6pcFaYtRfHJJnOR3L0Kdq1BGRkEPzdKFj"
+)]
+#[case(
+    &[CTree { s: "I", i: 0, m: None}],
+    "IMd157dX7eYwzQqhETvRAmYas4gpylKmQiq3goYvJoZG"
+)]
+#[case(
     &[CTree { s: "J", i: 0, m: None}],
     "JJ97qKeoQzmWJvqxmeuqIMQbRxHErlNBUsm9BJ2FKX6T"
 )]

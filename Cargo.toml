@@ -1,3 +1,6 @@
 [workspace]
 members = ["cesriding", "cesrinf", "cesrinfo-web"]
 resolver = "2"
+
+[workspace.dependencies]
+colored = "2.1.0"
