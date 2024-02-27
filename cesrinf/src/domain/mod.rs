@@ -7,21 +7,20 @@ use matter::MatterCodeage;
 use self::indexer::IndexerCodeage;
 
 #[derive(Debug)]
-pub struct ParsedData<'a> {
-    pub stream: &'a str,
-    pub msgs: Vec<Msg<'a>>,
+pub struct ParsedData {
+    pub msgs: Vec<Msg>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum Msg<'a> {
+pub enum Msg {
     Counter,
     Matter {
-        codeage: MatterCodeage<'a>,
+        codeage: MatterCodeage,
         istart: usize,
-        indexed: Option<Vec<Msg<'a>>>,
+        indexed: Option<Vec<Msg>>,
     },
     Indexer {
-        codeage: IndexerCodeage<'a>,
+        codeage: IndexerCodeage,
         istart: usize,
     },
 }

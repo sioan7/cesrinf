@@ -1,9 +1,9 @@
 use crate::decoder::{is_lowercase_letter, is_uppercase_letter};
 
 #[derive(Debug, PartialEq)]
-pub struct IndexerCodeage<'a> {
-    pub selector: &'a str,
-    pub description: &'a str,
+pub struct IndexerCodeage {
+    pub selector: &'static str,
+    pub description: &'static str,
     /// hard size in chars (fixed) part of code size
     pub hs: usize,
     /// soft size in chars, (Variable) part of code size
@@ -14,7 +14,7 @@ pub struct IndexerCodeage<'a> {
     pub fs: usize,
 }
 
-impl<'a> IndexerCodeage<'a> {
+impl<'a> IndexerCodeage {
     /// code size in chars (derived value), where cs = hs + ss
     pub fn cs(&self) -> usize {
         self.hs + self.ss
@@ -47,7 +47,7 @@ impl<'a> IndexerCodeage<'a> {
     }
 }
 
-pub fn codeage(s: &str) -> Option<IndexerCodeage<'static>> {
+pub fn codeage(s: &str) -> Option<IndexerCodeage> {
     Some(match s {
         "A" => IndexerCodeage {
             selector: "A",

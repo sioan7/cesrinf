@@ -3,7 +3,7 @@ use colored::Colorize;
 use crate::domain::Msg;
 
 #[derive(Debug, PartialEq)]
-pub enum Error<'a> {
+pub enum Error {
     EmptyStream,
     UnsupportedCodeCodex(String),
     InvalidCountChar(char),
@@ -28,14 +28,14 @@ pub enum Error<'a> {
     },
     DecodeFailure {
         stream: String,
-        decoded_msgs: Vec<Msg<'a>>,
-        cause: Box<Error<'a>>,
+        decoded_msgs: Vec<Msg>,
+        cause: Box<Error>,
     },
 }
 
-impl<'a> std::error::Error for Error<'a> {}
+impl<'a> std::error::Error for Error {}
 
-impl<'a> std::fmt::Display for Error<'a> {
+impl<'a> std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use Error::*;
         match self {

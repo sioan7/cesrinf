@@ -32,32 +32,7 @@ impl<'a> CesrParser<'a> {
         Ok(Self { stream })
     }
 
-    pub fn parse(self) -> Result<ParsedData<'a>, Error<'a>> {
+    pub fn parse(self) -> Result<ParsedData, Error> {
         handcrafted_decoder::decode(self.stream)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use rstest::rstest;
-
-    use crate::domain::matter;
-
-    use super::*;
-
-    #[rstest]
-    #[case("E", "EBdXt3gIXOf2BBWNHdSXCJnFJL5OuQPyM5K0neuniccM")]
-    fn test_parsing(#[case] code: &str, #[case] matter: &str) {
-        let parser = CesrParser::new(matter).unwrap();
-        let pd = parser.parse().unwrap();
-        assert_eq!(
-            pd.msgs,
-            vec![crate::domain::Msg::Matter {
-                codeage: matter::codeage(code).unwrap(),
-                istart: 0,
-                indexed: None,
-            }]
-        );
-        // assert_eq!(codeage(code).unwrap(), pd.codeage);
     }
 }

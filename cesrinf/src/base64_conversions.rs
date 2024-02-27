@@ -4,7 +4,7 @@
 use crate::error::Error;
 
 pub trait TryFromBase64<A: Sized> {
-    fn try_from_base64(src: A) -> Result<Self, Error<'static>>
+    fn try_from_base64(src: A) -> Result<Self, Error>
     where
         Self: Sized;
 }
@@ -16,7 +16,7 @@ pub trait FromBase64<A: Sized> {
 }
 
 impl TryFromBase64<&str> for usize {
-    fn try_from_base64(s: &str) -> Result<Self, Error<'static>> {
+    fn try_from_base64(s: &str) -> Result<Self, Error> {
         if s.is_empty() {
             return Err(Error::EmptyStream);
         }
@@ -31,7 +31,7 @@ impl TryFromBase64<&str> for usize {
 }
 
 impl TryFromBase64<char> for usize {
-    fn try_from_base64(src: char) -> Result<Self, Error<'static>>
+    fn try_from_base64(src: char) -> Result<Self, Error>
     where
         Self: Sized,
     {
@@ -65,7 +65,7 @@ impl FromBase64<usize> for String {
 }
 
 impl TryFromBase64<usize> for char {
-    fn try_from_base64(src: usize) -> Result<Self, Error<'static>>
+    fn try_from_base64(src: usize) -> Result<Self, Error>
     where
         Self: Sized,
     {
