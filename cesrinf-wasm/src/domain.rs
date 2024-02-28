@@ -1,7 +1,7 @@
 use cesrinf::domain::{Msg, ParsedData};
 use wasm_bindgen::prelude::*;
 
-#[wasm_bindgen(getter_with_clone, js_class = "ParsedData")]
+#[wasm_bindgen(getter_with_clone, js_name = "ParsedData")]
 #[derive(Clone, Debug)]
 pub struct WrappedParsedData {
     pub msgs: Vec<WrappedMsg>,
@@ -14,7 +14,7 @@ pub enum MsgType {
     Indexer = "indexer",
 }
 
-#[wasm_bindgen(getter_with_clone, js_class = "Msg")]
+#[wasm_bindgen(getter_with_clone, js_name = "Msg")]
 #[derive(Clone, Debug)]
 pub struct WrappedMsg {
     pub msg_type: MsgType,
@@ -23,7 +23,7 @@ pub struct WrappedMsg {
     pub indexed: Option<Vec<WrappedMsg>>,
 }
 
-#[wasm_bindgen(getter_with_clone, js_class = "Codeage")]
+#[wasm_bindgen(getter_with_clone, js_name = "Codeage")]
 #[derive(Clone, Debug)]
 pub struct WrappedCodeage {
     pub selector: String,
