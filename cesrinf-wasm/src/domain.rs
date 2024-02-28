@@ -1,4 +1,4 @@
-use cesrinf::domain::{Msg, ParsedData};
+use cesrinf::domain::{indexer::IndexerCodeage, matter::MatterCodeage, Msg, ParsedData};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(getter_with_clone, js_name = "ParsedData")]
@@ -57,40 +57,52 @@ impl From<Msg> for WrappedMsg {
                 indexed,
             } => WrappedMsg {
                 msg_type: MsgType::Matter,
-                codeage: WrappedCodeage {
-                    selector: codeage.selector.to_owned(),
-                    description: codeage.description.to_owned(),
-                    hs: codeage.hs,
-                    ss: codeage.ss,
-                    fs: codeage.fs,
-                    cs: codeage.cs(),
-                    vs: codeage.vs(),
-                    ls: codeage.ls(),
-                    ps: codeage.ps(),
-                    os: None,
-                    ms: None,
-                },
+                codeage: codeage.into(),
                 istart,
                 indexed: indexed.map(|x| x.into_iter().map(From::from).collect()),
             },
             Msg::Indexer { codeage, istart } => WrappedMsg {
                 msg_type: MsgType::Indexer,
-                codeage: WrappedCodeage {
-                    selector: codeage.selector.to_owned(),
-                    description: codeage.description.to_owned(),
-                    hs: codeage.hs,
-                    ss: codeage.ss,
-                    fs: Some(codeage.fs),
-                    cs: codeage.cs(),
-                    vs: Some(codeage.vs()),
-                    ls: codeage.ls(),
-                    ps: codeage.ps(),
-                    os: Some(codeage.os),
-                    ms: Some(codeage.ms()),
-                },
+                codeage: codeage.into(),
                 istart,
                 indexed: None,
             },
+        }
+    }
+}
+
+impl From<MatterCodeage> for WrappedCodeage {
+    fn from(value: MatterCodeage) -> Self {
+        WrappedCodeage {
+            selector: value.selector.to_owned(),
+            description: value.description.to_owned(),
+            hs: value.hs,
+            ss: value.ss,
+            fs: value.fs,
+            cs: value.cs(),
+            vs: value.vs(),
+            ls: value.ls(),
+            ps: value.ps(),
+            os: None,
+            ms: None,
+        }
+    }
+}
+
+impl From<IndexerCodeage> for WrappedCodeage {
+    fn from(value: IndexerCodeage) -> Self {
+        WrappedCodeage {
+            selector: value.selector.to_owned(),
+            description: value.description.to_owned(),
+            hs: value.hs,
+            ss: value.ss,
+            fs: Some(value.fs),
+            cs: value.cs(),
+            vs: Some(value.vs()),
+            ls: value.ls(),
+            ps: value.ps(),
+            os: Some(value.os),
+            ms: Some(value.ms()),
         }
     }
 }
