@@ -14,13 +14,13 @@ pub fn parse(stream: &str) -> Vec<Msg> {
 
 /// A tree of codes.
 #[derive(Debug, PartialEq)]
-pub struct CTree<'a> {
+pub struct CTree {
     /// selector
-    pub s: &'a str,
+    pub s: &'static str,
     /// start index
     pub i: usize,
     /// indexed messages
-    pub m: Option<Vec<CTree<'a>>>,
+    pub m: Option<Vec<CTree>>,
 }
 
 pub fn flatten_codes_recursively(msgs: Vec<Msg>) -> Vec<CTree> {

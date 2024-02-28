@@ -32,7 +32,7 @@ pub fn decode(stream: &str) -> Result<ParsedData, Error> {
         }
     }
 
-    Ok(ParsedData { stream, msgs })
+    Ok(ParsedData { msgs })
 }
 
 fn token(
@@ -222,7 +222,7 @@ fn token(
                             token_start_idx,
                         })?;
 
-                    let mut msgs: Vec<Msg<'_>> = Vec::with_capacity(count);
+                    let mut msgs: Vec<Msg> = Vec::with_capacity(count);
                     let mut nts = &stream[fs..];
                     let mut ntsi = token_start_idx + fs;
                     for _ in 0..count {

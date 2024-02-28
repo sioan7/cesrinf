@@ -16,7 +16,6 @@ cesrinf = { path = "../cesrinf" }
 
 console_error_panic_hook = { version = "0.1.7", optional = true }
 js-sys = "0.3.68"
-ouroboros = "0.18.3"
 wasm-bindgen = "0.2.91"
 web-sys = { version = "0.3.68", features = [
     'Document',

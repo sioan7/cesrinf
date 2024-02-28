@@ -1,27 +1,24 @@
 use cesrinf::CesrParser;
-use ouroboros::self_referencing;
 use wasm_bindgen::prelude::*;
 
-use crate::error::{JsResult, Result};
+use crate::{
+    domain::WrappedParsedData,
+    error::{JsResult, Result},
+};
 
-#[self_referencing]
 #[wasm_bindgen(js_name = CesrParser)]
-pub struct ParserWrapper {
-    owned_stream: String,
-    #[borrows(owned_stream)]
-    parser: CesrParser<'this>,
-}
+pub struct ParserWrapper(String);
 
 #[wasm_bindgen(js_class = CesrParser)]
 impl ParserWrapper {
     #[wasm_bindgen(constructor)]
-    pub fn new(stream: &str) -> Result<ParserWrapper> {
-        let cp = CesrParser::new(stream).as_js()?;
-        Ok(ParserWrapper(cp))
+    pub fn new(stream: String) -> ParserWrapper {
+        ParserWrapper(stream)
     }
 
-    pub fn parse(&self) -> Result<String> {
-        let pd = self.0.parse().as_js()?;
-        Ok(pd)
+    pub fn parse(&self) -> Result<WrappedParsedData> {
+        let cp = CesrParser::new(&self.0).as_js()?;
+        let pd = cp.parse().as_js()?;
+        Ok(pd.into())
     }
 }
