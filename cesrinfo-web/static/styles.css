@@ -1,0 +1,10 @@
+.base__logo {
+    all: unset;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.index__container {
+    display: grid;
+    gap: 1rem;
+}

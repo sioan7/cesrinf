@@ -14,7 +14,7 @@ pub struct IndexerCodeage {
     pub fs: usize,
 }
 
-impl<'a> IndexerCodeage {
+impl IndexerCodeage {
     /// code size in chars (derived value), where cs = hs + ss
     pub fn cs(&self) -> usize {
         self.hs + self.ss

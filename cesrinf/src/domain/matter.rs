@@ -12,7 +12,7 @@ pub struct MatterCodeage {
     pub fs: Option<usize>,
 }
 
-impl<'a> MatterCodeage {
+impl MatterCodeage {
     /// code size in chars (derived value), where cs = hs + ss
     pub fn cs(&self) -> usize {
         self.hs + self.ss

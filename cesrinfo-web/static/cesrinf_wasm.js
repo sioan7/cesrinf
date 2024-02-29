@@ -189,7 +189,7 @@ export class CesrParser {
         return this;
     }
     /**
-    * @returns {WrappedParsedData}
+    * @returns {ParsedData}
     */
     parse() {
         try {
@@ -201,38 +201,38 @@ export class CesrParser {
             if (r2) {
                 throw takeObject(r1);
             }
-            return WrappedParsedData.__wrap(r0);
+            return ParsedData.__wrap(r0);
         } finally {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }
     }
 }
 
-const WrappedCodeageFinalization = (typeof FinalizationRegistry === 'undefined')
+const CodeageFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_wrappedcodeage_free(ptr >>> 0));
+    : new FinalizationRegistry(ptr => wasm.__wbg_codeage_free(ptr >>> 0));
 /**
 */
-export class WrappedCodeage {
+export class Codeage {
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
-        const obj = Object.create(WrappedCodeage.prototype);
+        const obj = Object.create(Codeage.prototype);
         obj.__wbg_ptr = ptr;
-        WrappedCodeageFinalization.register(obj, obj.__wbg_ptr, obj);
+        CodeageFinalization.register(obj, obj.__wbg_ptr, obj);
         return obj;
     }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
         this.__wbg_ptr = 0;
-        WrappedCodeageFinalization.unregister(this);
+        CodeageFinalization.unregister(this);
         return ptr;
     }
 
     free() {
         const ptr = this.__destroy_into_raw();
-        wasm.__wbg_wrappedcodeage_free(ptr);
+        wasm.__wbg_codeage_free(ptr);
     }
     /**
     * @returns {string}
@@ -242,7 +242,7 @@ export class WrappedCodeage {
         let deferred1_1;
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_selector(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_selector(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             deferred1_0 = r0;
@@ -259,7 +259,7 @@ export class WrappedCodeage {
     set selector(arg0) {
         const ptr0 = passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_wrappedcodeage_selector(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_codeage_selector(this.__wbg_ptr, ptr0, len0);
     }
     /**
     * @returns {string}
@@ -269,7 +269,7 @@ export class WrappedCodeage {
         let deferred1_1;
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_description(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_description(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             deferred1_0 = r0;
@@ -286,33 +286,33 @@ export class WrappedCodeage {
     set description(arg0) {
         const ptr0 = passStringToWasm0(arg0, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_wrappedcodeage_description(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_codeage_description(this.__wbg_ptr, ptr0, len0);
     }
     /**
     * @returns {number}
     */
     get hs() {
-        const ret = wasm.__wbg_get_wrappedcodeage_hs(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_codeage_hs(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set hs(arg0) {
-        wasm.__wbg_set_wrappedcodeage_hs(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_codeage_hs(this.__wbg_ptr, arg0);
     }
     /**
     * @returns {number}
     */
     get ss() {
-        const ret = wasm.__wbg_get_wrappedcodeage_ss(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_codeage_ss(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set ss(arg0) {
-        wasm.__wbg_set_wrappedcodeage_ss(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_codeage_ss(this.__wbg_ptr, arg0);
     }
     /**
     * @returns {number | undefined}
@@ -320,7 +320,7 @@ export class WrappedCodeage {
     get fs() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_fs(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_fs(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return r0 === 0 ? undefined : r1 >>> 0;
@@ -332,20 +332,20 @@ export class WrappedCodeage {
     * @param {number | undefined} [arg0]
     */
     set fs(arg0) {
-        wasm.__wbg_set_wrappedcodeage_fs(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
+        wasm.__wbg_set_codeage_fs(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
     }
     /**
     * @returns {number}
     */
     get cs() {
-        const ret = wasm.__wbg_get_wrappedcodeage_cs(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_codeage_cs(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set cs(arg0) {
-        wasm.__wbg_set_wrappedcodeage_cs(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_codeage_cs(this.__wbg_ptr, arg0);
     }
     /**
     * @returns {number | undefined}
@@ -353,7 +353,7 @@ export class WrappedCodeage {
     get vs() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_vs(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_vs(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return r0 === 0 ? undefined : r1 >>> 0;
@@ -365,33 +365,33 @@ export class WrappedCodeage {
     * @param {number | undefined} [arg0]
     */
     set vs(arg0) {
-        wasm.__wbg_set_wrappedcodeage_vs(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
+        wasm.__wbg_set_codeage_vs(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
     }
     /**
     * @returns {number}
     */
     get ls() {
-        const ret = wasm.__wbg_get_wrappedcodeage_ls(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_codeage_ls(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set ls(arg0) {
-        wasm.__wbg_set_wrappedcodeage_ls(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_codeage_ls(this.__wbg_ptr, arg0);
     }
     /**
     * @returns {number}
     */
     get ps() {
-        const ret = wasm.__wbg_get_wrappedcodeage_ps(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_codeage_ps(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set ps(arg0) {
-        wasm.__wbg_set_wrappedcodeage_ps(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_codeage_ps(this.__wbg_ptr, arg0);
     }
     /**
     * @returns {number | undefined}
@@ -399,7 +399,7 @@ export class WrappedCodeage {
     get os() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_os(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_os(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return r0 === 0 ? undefined : r1 >>> 0;
@@ -411,7 +411,7 @@ export class WrappedCodeage {
     * @param {number | undefined} [arg0]
     */
     set os(arg0) {
-        wasm.__wbg_set_wrappedcodeage_os(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
+        wasm.__wbg_set_codeage_os(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
     }
     /**
     * @returns {number | undefined}
@@ -419,7 +419,7 @@ export class WrappedCodeage {
     get ms() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedcodeage_ms(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_codeage_ms(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return r0 === 0 ? undefined : r1 >>> 0;
@@ -431,27 +431,27 @@ export class WrappedCodeage {
     * @param {number | undefined} [arg0]
     */
     set ms(arg0) {
-        wasm.__wbg_set_wrappedcodeage_ms(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
+        wasm.__wbg_set_codeage_ms(this.__wbg_ptr, !isLikeNone(arg0), isLikeNone(arg0) ? 0 : arg0);
     }
 }
 
-const WrappedMsgFinalization = (typeof FinalizationRegistry === 'undefined')
+const MsgFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_wrappedmsg_free(ptr >>> 0));
+    : new FinalizationRegistry(ptr => wasm.__wbg_msg_free(ptr >>> 0));
 /**
 */
-export class WrappedMsg {
+export class Msg {
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
-        const obj = Object.create(WrappedMsg.prototype);
+        const obj = Object.create(Msg.prototype);
         obj.__wbg_ptr = ptr;
-        WrappedMsgFinalization.register(obj, obj.__wbg_ptr, obj);
+        MsgFinalization.register(obj, obj.__wbg_ptr, obj);
         return obj;
     }
 
     static __unwrap(jsValue) {
-        if (!(jsValue instanceof WrappedMsg)) {
+        if (!(jsValue instanceof Msg)) {
             return 0;
         }
         return jsValue.__destroy_into_raw();
@@ -460,62 +460,62 @@ export class WrappedMsg {
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
         this.__wbg_ptr = 0;
-        WrappedMsgFinalization.unregister(this);
+        MsgFinalization.unregister(this);
         return ptr;
     }
 
     free() {
         const ptr = this.__destroy_into_raw();
-        wasm.__wbg_wrappedmsg_free(ptr);
+        wasm.__wbg_msg_free(ptr);
     }
     /**
     * @returns {any}
     */
     get msg_type() {
-        const ret = wasm.__wbg_get_wrappedmsg_msg_type(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_msg_msg_type(this.__wbg_ptr);
         return takeObject(ret);
     }
     /**
     * @param {any} arg0
     */
     set msg_type(arg0) {
-        wasm.__wbg_set_wrappedmsg_msg_type(this.__wbg_ptr, addHeapObject(arg0));
+        wasm.__wbg_set_msg_msg_type(this.__wbg_ptr, addHeapObject(arg0));
     }
     /**
-    * @returns {WrappedCodeage}
+    * @returns {Codeage}
     */
     get codeage() {
-        const ret = wasm.__wbg_get_wrappedmsg_codeage(this.__wbg_ptr);
-        return WrappedCodeage.__wrap(ret);
+        const ret = wasm.__wbg_get_msg_codeage(this.__wbg_ptr);
+        return Codeage.__wrap(ret);
     }
     /**
-    * @param {WrappedCodeage} arg0
+    * @param {Codeage} arg0
     */
     set codeage(arg0) {
-        _assertClass(arg0, WrappedCodeage);
+        _assertClass(arg0, Codeage);
         var ptr0 = arg0.__destroy_into_raw();
-        wasm.__wbg_set_wrappedmsg_codeage(this.__wbg_ptr, ptr0);
+        wasm.__wbg_set_msg_codeage(this.__wbg_ptr, ptr0);
     }
     /**
     * @returns {number}
     */
     get istart() {
-        const ret = wasm.__wbg_get_wrappedmsg_istart(this.__wbg_ptr);
+        const ret = wasm.__wbg_get_msg_istart(this.__wbg_ptr);
         return ret >>> 0;
     }
     /**
     * @param {number} arg0
     */
     set istart(arg0) {
-        wasm.__wbg_set_wrappedmsg_istart(this.__wbg_ptr, arg0);
+        wasm.__wbg_set_msg_istart(this.__wbg_ptr, arg0);
     }
     /**
-    * @returns {(WrappedMsg)[] | undefined}
+    * @returns {(Msg)[] | undefined}
     */
     get indexed() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedmsg_indexed(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_msg_indexed(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             let v1;
@@ -529,48 +529,48 @@ export class WrappedMsg {
         }
     }
     /**
-    * @param {(WrappedMsg)[] | undefined} [arg0]
+    * @param {(Msg)[] | undefined} [arg0]
     */
     set indexed(arg0) {
         var ptr0 = isLikeNone(arg0) ? 0 : passArrayJsValueToWasm0(arg0, wasm.__wbindgen_malloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_wrappedmsg_indexed(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_msg_indexed(this.__wbg_ptr, ptr0, len0);
     }
 }
 
-const WrappedParsedDataFinalization = (typeof FinalizationRegistry === 'undefined')
+const ParsedDataFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }
-    : new FinalizationRegistry(ptr => wasm.__wbg_wrappedparseddata_free(ptr >>> 0));
+    : new FinalizationRegistry(ptr => wasm.__wbg_parseddata_free(ptr >>> 0));
 /**
 */
-export class WrappedParsedData {
+export class ParsedData {
 
     static __wrap(ptr) {
         ptr = ptr >>> 0;
-        const obj = Object.create(WrappedParsedData.prototype);
+        const obj = Object.create(ParsedData.prototype);
         obj.__wbg_ptr = ptr;
-        WrappedParsedDataFinalization.register(obj, obj.__wbg_ptr, obj);
+        ParsedDataFinalization.register(obj, obj.__wbg_ptr, obj);
         return obj;
     }
 
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
         this.__wbg_ptr = 0;
-        WrappedParsedDataFinalization.unregister(this);
+        ParsedDataFinalization.unregister(this);
         return ptr;
     }
 
     free() {
         const ptr = this.__destroy_into_raw();
-        wasm.__wbg_wrappedparseddata_free(ptr);
+        wasm.__wbg_parseddata_free(ptr);
     }
     /**
-    * @returns {(WrappedMsg)[]}
+    * @returns {(Msg)[]}
     */
     get msgs() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.__wbg_get_wrappedparseddata_msgs(retptr, this.__wbg_ptr);
+            wasm.__wbg_get_parseddata_msgs(retptr, this.__wbg_ptr);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             var v1 = getArrayJsValueFromWasm0(r0, r1).slice();
@@ -581,12 +581,12 @@ export class WrappedParsedData {
         }
     }
     /**
-    * @param {(WrappedMsg)[]} arg0
+    * @param {(Msg)[]} arg0
     */
     set msgs(arg0) {
         const ptr0 = passArrayJsValueToWasm0(arg0, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.__wbg_set_wrappedparseddata_msgs(this.__wbg_ptr, ptr0, len0);
+        wasm.__wbg_set_parseddata_msgs(this.__wbg_ptr, ptr0, len0);
     }
 }
 
@@ -624,8 +624,8 @@ async function __wbg_load(module, imports) {
 function __wbg_get_imports() {
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbg_wrappedmsg_new = function(arg0) {
-        const ret = WrappedMsg.__wrap(arg0);
+    imports.wbg.__wbg_msg_new = function(arg0) {
+        const ret = Msg.__wrap(arg0);
         return addHeapObject(ret);
     };
     imports.wbg.__wbindgen_string_get = function(arg0, arg1) {
@@ -639,8 +639,8 @@ function __wbg_get_imports() {
     imports.wbg.__wbindgen_object_drop_ref = function(arg0) {
         takeObject(arg0);
     };
-    imports.wbg.__wbg_wrappedmsg_unwrap = function(arg0) {
-        const ret = WrappedMsg.__unwrap(takeObject(arg0));
+    imports.wbg.__wbg_msg_unwrap = function(arg0) {
+        const ret = Msg.__unwrap(takeObject(arg0));
         return ret;
     };
     imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
