@@ -1,4 +1,4 @@
-# cesrinfo
+# cesrinf
 
 A collection of tools for exploring _CESR_ streams.
 

@@ -8,7 +8,6 @@ edition = "2021"
 colored = { workspace = true }
 
 base64 = "0.21.7"
-clap = { version = "4.5.0", features = ["derive"] }
 rstest = "0.18.2"
 
 serde = { workspace = true }

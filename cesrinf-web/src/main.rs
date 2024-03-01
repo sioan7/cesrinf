@@ -2,7 +2,7 @@ use std::{error::Error, net::SocketAddr};
 
 use axum::{routing::get, Router};
 
-use cesrinfo_web::routes::index;
+use cesrinf_web::routes::index;
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 use tracing::info;
