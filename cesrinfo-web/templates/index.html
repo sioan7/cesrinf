@@ -2,10 +2,21 @@
 
 {% block content %}
 
-<div class="index__container">
-    <textarea id="parse-ta" rows="5" cols="200"></textarea>
-    <button id="parse-btn">Parse CESR</button>
-    <textarea id="parse-fin" rows="25" cols="200"></textarea>
+<div class="index__parsing">
+    <textarea id="parsing-in" rows="5"></textarea>
+    <button id="parsing-btn">Parse CESR</button>
+    <textarea id="parsing-out" rows="25"></textarea>
+</div>
+
+<h3>Examples</h3>
+<p>
+    <em style="margin-bottom:1rem">Click examples to parse:</em>
+</p>
+<div id="examples" class="index__examples">
+    {% for example in examples %}
+        <div class="index__examples-example"> {{ example }} </div>
+    {% endfor %}
+    <div>
 </div>
 
 

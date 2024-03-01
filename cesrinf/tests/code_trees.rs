@@ -19,7 +19,8 @@ mod common;
 )]
 #[case(
     &[CTree { s: "A", i: 0, m: None}, CTree { s: "A", i: 44, m: None}],
-    "AKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgzAKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgz"
+    "AKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgz\
+        AKrRTkeoyVnRBOJG03ZXeSroKhM7j_YyNurHuWxf8wgz"
 )]
 #[case(
     &[CTree { s: "B", i: 0, m: None}],

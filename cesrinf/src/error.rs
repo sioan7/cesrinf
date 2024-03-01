@@ -31,6 +31,7 @@ pub enum Error {
         decoded_msgs: Vec<Msg>,
         cause: Box<Error>,
     },
+    SerializationFailure(String),
 }
 
 impl std::error::Error for Error {}
@@ -94,6 +95,9 @@ impl std::fmt::Display for Error {
                 cause,
                 decoded_msgs,
             ),
+            SerializationFailure(s) => {
+                write!(f, "serialization failue: {s}")
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 use cesrinf::domain::{indexer::IndexerCodeage, matter::MatterCodeage, Msg, ParsedData};
+use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(getter_with_clone, js_name = "ParsedData")]
@@ -7,15 +8,28 @@ pub struct WrappedParsedData {
     pub msgs: Vec<WrappedMsg>,
 }
 
+#[wasm_bindgen(js_class = "ParsedData")]
+impl WrappedParsedData {
+    pub fn to_json_pretty(&self) -> Result<String, String> {
+        let res = if self.msgs.len() == 1 {
+            let first_message = self.msgs.first().unwrap();
+            serde_json::to_string_pretty(first_message)
+        } else {
+            serde_json::to_string_pretty(&self.msgs)
+        };
+        res.map_err(|e| e.to_string())
+    }
+}
+
 #[wasm_bindgen]
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize)]
 pub enum MsgType {
     Matter = "matter",
     Indexer = "indexer",
 }
 
 #[wasm_bindgen(getter_with_clone, js_name = "Msg")]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct WrappedMsg {
     pub msg_type: MsgType,
     pub codeage: WrappedCodeage,
@@ -24,7 +38,7 @@ pub struct WrappedMsg {
 }
 
 #[wasm_bindgen(getter_with_clone, js_name = "Codeage")]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct WrappedCodeage {
     pub selector: String,
     pub description: String,

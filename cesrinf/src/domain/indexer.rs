@@ -1,6 +1,8 @@
+use serde::Serialize;
+
 use crate::decoder::{is_lowercase_letter, is_uppercase_letter};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize)]
 pub struct IndexerCodeage {
     pub selector: &'static str,
     pub description: &'static str,

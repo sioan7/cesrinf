@@ -4,7 +4,35 @@
     text-decoration: none;
 }
 
-.index__container {
+.index__parsing {
     display: grid;
     gap: 1rem;
+}
+
+.index__parsing-out--success {
+    border-color: green;
+}
+
+.index__parsing-out--error {
+    border-color: red;
+}
+
+.index__examples {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.index__examples-example {
+    overflow-wrap: anywhere;
+    word-break: break-all;
+    hyphens: none;
+    padding: 3px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.index__examples-example:focus {
+    border-color: blue;
 }

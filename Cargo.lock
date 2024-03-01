@@ -494,6 +494,8 @@ dependencies = [
  "cesrinf",
  "console_error_panic_hook",
  "js-sys",
+ "serde",
+ "serde_json",
  "wasm-bindgen",
  "web-sys",
 ]
