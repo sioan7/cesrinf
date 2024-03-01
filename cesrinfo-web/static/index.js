@@ -21,7 +21,7 @@ function parse(input) {
         parsingOut.value = parsedData.to_json_pretty();
         parsingOut.classList.remove(CL_PARSING_OUT_ERROR);
         parsingOut.classList.add(CL_PARSING_OUT_SUCCESS);
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         parsingOut.value = e;
         parsingOut.classList.remove(CL_PARSING_OUT_SUCCESS);
