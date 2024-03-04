@@ -1,6 +1,7 @@
 use std::io;
 
 use clap::Parser;
+use colored::Colorize;
 
 use cesrinf::CesrParser;
 
@@ -10,10 +11,23 @@ fn main() -> io::Result<()> {
     // NOTE: Assumption 1: assume only T domain
 
     let args = Args::parse();
+    eprintln!("Parsing {}", args.stream.magenta());
 
-    let parser = CesrParser::new(&args.stream).unwrap();
-    let dat = parser.parse().unwrap();
-    println!("{:#?}", dat);
+    let parser = match CesrParser::new(&args.stream) {
+        Ok(x) => x,
+        Err(e) => {
+            eprintln!("{}", e.to_string().red());
+            std::process::exit(1);
+        }
+    };
+    let dat = match parser.parse() {
+        Ok(x) => x,
+        Err(e) => {
+            eprintln!("{}", e.to_string().red());
+            std::process::exit(1);
+        }
+    };
+    println!("{}", format!("{:#?}", dat).green());
 
     Ok(())
 }

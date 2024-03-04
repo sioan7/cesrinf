@@ -9,3 +9,5 @@ edition = "2021"
 cesrinf = { path = "../cesrinf" }
 
 clap = { version = "4.5.0", features = ["derive"] }
+
+colored = { workspace = true }
