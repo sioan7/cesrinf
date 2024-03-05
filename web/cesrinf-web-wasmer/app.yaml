@@ -1,4 +1,5 @@
+---
 kind: wasmer.io/App.v0
 name: cesrinf-web-wasmer
-description: Sample Axum server for Wasmer Edge
-package: sioan7/cesrinf-web-wasmer
+package: sioan7/cesrinf-web-wasmer@0.1.1
+app_id: da_NnzrI7tJUgZn
