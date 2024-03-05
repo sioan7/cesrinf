@@ -1,6 +1,6 @@
 [package]
 name = "sioan7/cesrinf-web-wasmer"
-version = "0.1.1"
+version = "0.1.2"
 description = "A website for exploring _CESR_ streams"
 wasmer-extra-flags = "--net --enable-threads --enable-bulk-memory"
 
