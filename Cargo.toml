@@ -7,7 +7,7 @@ members = [
     "web/cesrinf-web",
     "web/common-web",
 ]
-exclude = ["web/cesrinf-web-wasmer"]
+exclude = ["web/cesrinf-web-spin", "web/cesrinf-web-wasmer"]
 resolver = "2"
 
 [workspace.dependencies]
