@@ -1,0 +1,18 @@
+[package]
+name = "sioan7/cesrinf-web-wasmer"
+version = "0.1.0"
+description = "A website for exploring _CESR_ streams"
+wasmer-extra-flags = "--net --enable-threads --enable-bulk-memory"
+
+[[module]]
+name = "cesrinf-web-wasmer"
+source = "./target/wasm32-wasmer-wasi/release/cesrinf-web-wasmer.wasm"
+abi = "wasi"
+
+[[command]]
+name = "proxy"
+module = "cesrinf-web-wasmer"
+runner = "https://webc.org/runner/wasi"
+
+[fs]
+static = "../static"
