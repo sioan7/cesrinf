@@ -45,7 +45,9 @@ fn token(
     }
 
     if indexed {
-        let selector = &stream[..=0];
+        let selector = stream
+            .get(..=0)
+            .expect("stream contains at least a character");
         if let "A" | "B" | "C" | "D" = selector {
             let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
@@ -53,8 +55,11 @@ fn token(
                 token_start_idx,
             })?;
             let fs = codeage.fs;
-            let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: next_token_start_idx,
+            })?;
             return Ok(Some((
                 Msg::Indexer {
                     codeage,
@@ -72,7 +77,9 @@ fn token(
             });
         }
 
-        let selector = &stream[..=1];
+        let selector = stream
+            .get(..=1)
+            .expect("stream contains at least 2 characters");
         if let "0A" | "0B" | "2A" | "2B" | "2C" | "2D" | "3A" | "3B" = selector {
             // TODO: fill with signatures from both indices
             let codeage = indexer::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
@@ -81,8 +88,11 @@ fn token(
                 token_start_idx,
             })?;
             let fs = codeage.fs;
-            let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: next_token_start_idx,
+            })?;
             return Ok(Some((
                 Msg::Indexer {
                     codeage,
@@ -99,7 +109,9 @@ fn token(
         });
     }
 
-    let universal_selector = &stream[..=0];
+    let universal_selector = stream
+        .get(..=0)
+        .expect("stream contains at least a character");
     match universal_selector {
         x if is_uppercase_letter(x) => {
             let codeage = matter::codeage(x).ok_or_else(|| Error::SelectorNotFound {
@@ -110,7 +122,10 @@ fn token(
             let fs = codeage
                 .fs
                 .expect("fs is always defined for capital selectors");
-            let next_tokens = &stream[fs..];
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let next_token_start_idx = token_start_idx + fs;
             Ok(Some((
                 Msg::Matter {
@@ -123,7 +138,10 @@ fn token(
             )))
         }
         "0" => {
-            let selector = &stream[..=1];
+            let selector = stream.get(..=1).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
                 stream_remainder: stream.to_owned(),
@@ -132,8 +150,11 @@ fn token(
             let fs = codeage
                 .fs
                 .expect("fs is always defined for leading '0' selectors");
-            let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: next_token_start_idx,
+            })?;
             Ok(Some((
                 Msg::Matter {
                     codeage,
@@ -145,7 +166,10 @@ fn token(
             )))
         }
         "1" => {
-            let selector = &stream[..=3];
+            let selector = stream.get(..=3).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx,
+            })?;
             let codeage = matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                 selector: selector.to_string(),
                 stream_remainder: stream.to_owned(),
@@ -154,8 +178,11 @@ fn token(
             let fs = codeage
                 .fs
                 .expect("fs is always defined for leading '1' selectors");
-            let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: next_token_start_idx,
+            })?;
             Ok(Some((
                 Msg::Matter {
                     codeage,
@@ -171,11 +198,17 @@ fn token(
             Ok(None)
         }
         "-" => {
-            let selector = &stream[1..=1];
+            let selector = stream.get(1..=1).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: token_start_idx + 1,
+            })?;
             match selector {
                 "-" => {
                     // TODO: this is the version
-                    let selector = &stream[..=1];
+                    let selector = stream.get(..=1).ok_or_else(|| Error::PrematureEnd {
+                        stream_remainder: stream.to_owned(),
+                        token_start_idx,
+                    })?;
                     let codeage =
                         matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
                             selector: selector.to_string(),
@@ -185,8 +218,12 @@ fn token(
                     let fs = codeage
                         .fs
                         .expect("fs is always defined for the '--' selector");
-                    let next_tokens = &stream[fs..];
                     let next_token_start_idx = token_start_idx + fs;
+                    let next_tokens = &stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                        stream_remainder: stream.to_owned(),
+                        token_start_idx: next_token_start_idx,
+                    })?;
+
                     Ok(Some((
                         Msg::Matter {
                             codeage,
@@ -199,9 +236,15 @@ fn token(
                 }
                 x if x == "0" || is_uppercase_letter(x) => {
                     let selector = if x == "0" {
-                        &stream[..=2]
+                        stream.get(..=2).ok_or_else(|| Error::PrematureEnd {
+                            stream_remainder: stream.to_owned(),
+                            token_start_idx,
+                        })?
                     } else {
-                        &stream[..=1]
+                        stream.get(..=1).ok_or_else(|| Error::PrematureEnd {
+                            stream_remainder: stream.to_owned(),
+                            token_start_idx,
+                        })?
                     };
                     let codeage =
                         matter::codeage(selector).ok_or_else(|| Error::SelectorNotFound {
@@ -214,7 +257,12 @@ fn token(
                         .fs
                         .expect("fs is always defined for leading '-' selectors");
                     let count_start_idx = selector.len();
-                    let count = &stream[count_start_idx..(count_start_idx + codeage.ss)];
+                    let count = stream
+                        .get(count_start_idx..(count_start_idx + codeage.ss))
+                        .ok_or_else(|| Error::PrematureEnd {
+                            stream_remainder: stream.to_owned(),
+                            token_start_idx: token_start_idx + count_start_idx,
+                        })?;
                     let count =
                         usize::try_from_base64(count).map_err(|_| Error::InvalidCountStream {
                             selector: selector.to_owned(),
@@ -223,8 +271,11 @@ fn token(
                         })?;
 
                     let mut msgs: Vec<Msg> = Vec::with_capacity(count);
-                    let mut nts = &stream[fs..];
                     let mut ntsi = token_start_idx + fs;
+                    let mut nts = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                        stream_remainder: stream.to_owned(),
+                        token_start_idx: ntsi,
+                    })?;
                     for _ in 0..count {
                         let is_indexed =
                             matches!(selector, "-A" | "-0A" | "-B" | "-0B" | "-C" | "-0C");
@@ -261,8 +312,11 @@ fn token(
                     token_start_idx,
                 })?;
             let fs = codeage.fs.expect("fs is always defined for '_' selector");
-            let next_tokens = &stream[fs..];
             let next_token_start_idx = token_start_idx + fs;
+            let next_tokens = stream.get(fs..).ok_or_else(|| Error::PrematureEnd {
+                stream_remainder: stream.to_owned(),
+                token_start_idx: next_token_start_idx,
+            })?;
             Ok(Some((
                 Msg::Matter {
                     codeage,

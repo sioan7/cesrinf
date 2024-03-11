@@ -21,6 +21,10 @@ pub enum Error {
         stream_remainder: String,
         token_start_idx: usize,
     },
+    PrematureEnd {
+        stream_remainder: String,
+        token_start_idx: usize,
+    },
     SelectorNotFound {
         selector: String,
         stream_remainder: String,
@@ -70,6 +74,15 @@ impl std::fmt::Display for Error {
             } => write!(
                 f,
                 "invalid remainig stream at index {}: `{}`",
+                token_start_idx.to_string().yellow(),
+                stream_remainder.red(),
+            ),
+            PrematureEnd {
+                stream_remainder,
+                token_start_idx,
+            } => write!(
+                f,
+                "stream starting at index {} ended prematurely: `{}`",
                 token_start_idx.to_string().yellow(),
                 stream_remainder.red(),
             ),
