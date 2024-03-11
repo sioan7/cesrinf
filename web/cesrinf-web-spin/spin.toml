@@ -1,0 +1,14 @@
+spin_manifest_version = 2
+
+[application]
+name = "cesrinf-web-spin"
+version = "0.1.0"
+
+[[trigger.http]]
+route = "/..."
+component = "cesrinf-web-spin"
+
+[component.cesrinf-web-spin]
+source = "target/wasm32-wasi/release/cesrinf_web_spin.wasm"
+[component.cesrinf-web-spin.build]
+command = "cargo build --target wasm32-wasi --release"
