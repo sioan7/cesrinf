@@ -152,13 +152,6 @@ function _assertClass(instance, klass) {
     }
     return instance.ptr;
 }
-/**
-* @returns {number}
-*/
-export function constant() {
-    const ret = wasm.constant();
-    return ret >>> 0;
-}
 
 const CesrParserFinalization = (typeof FinalizationRegistry === 'undefined')
     ? { register: () => {}, unregister: () => {} }

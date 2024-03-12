@@ -13,7 +13,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let router = Router::new()
         .route("/", get(index))
-        .nest_service("/static", ServeDir::new("../static"));
+        .nest_service("/static", ServeDir::new("static"));
 
     let port = std::env::var("PORT").unwrap_or_else(|_| "80".to_string());
     let port: u16 = port.parse().unwrap_or_else(|e| {
