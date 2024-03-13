@@ -5,7 +5,7 @@ use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 use tracing::info;
 
-use common_web::routes::index;
+use cesrinf_web_docker::routes::index;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
