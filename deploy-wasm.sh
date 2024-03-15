@@ -9,10 +9,10 @@ cd ..
 cp -v cesrinf-wasm/pkg/cesrinf_wasm.js web/static/
 cp -v cesrinf-wasm/pkg/cesrinf_wasm_bg.wasm web/static/
 
-rm -R web/cesrinf-web/static
-rm -R web/cesrinf-web-spin/static
-rm -R web/cesrinf-web-wasmer/static
+# rm -R web/cesrinf-web-docker/static
+# rm -R web/cesrinf-web-spin/static
+# rm -R web/cesrinf-web-wasmer/static
 
-cp -r web/static web/cesrinf-web/
-cp -r web/static web/cesrinf-web-spin/
-cp -r web/static web/cesrinf-web-wasmer/
+# cp -r web/static web/cesrinf-web/
+# cp -r web/static web/cesrinf-web-spin/
+# cp -r web/static web/cesrinf-web-wasmer/
