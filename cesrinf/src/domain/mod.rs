@@ -9,7 +9,7 @@ use crate::error::Error;
 
 use self::indexer::IndexerCodeage;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct ParsedData {
     pub msgs: Vec<Msg>,
 }

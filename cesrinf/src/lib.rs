@@ -7,4 +7,5 @@ pub mod domain;
 pub mod error;
 pub mod parser;
 
+pub use error::Error as CesrinfError;
 pub use parser::CesrParser;

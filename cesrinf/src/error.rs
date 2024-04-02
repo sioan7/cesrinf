@@ -1,8 +1,10 @@
 use colored::Colorize;
+use serde::Serialize;
 
 use crate::domain::Msg;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize)]
+#[serde(tag = "type")]
 pub enum Error {
     EmptyStream,
     UnsupportedCodeCodex(String),

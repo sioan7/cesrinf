@@ -1,11 +1,12 @@
 use std::{error::Error, net::SocketAddr, process::exit};
 
+use axum::routing::post;
 use axum::{routing::get, Router};
 use tokio::net::TcpListener;
 use tower_http::services::ServeDir;
 use tracing::info;
 
-use cesrinf_web_docker::routes::index;
+use cesrinf_web_docker::routes::{cesr, index};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -13,6 +14,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let router = Router::new()
         .route("/", get(index))
+        .route("/cesr", post(cesr))
         .nest_service("/static", ServeDir::new("static"));
 
     let port = std::env::var("PORT").unwrap_or_else(|_| "80".to_string());
