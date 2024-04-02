@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+cesrinf = { path = "../../cesrinf" }
+
 askama = { version = "0.12.1", features = ["markdown"] }
 askama_axum = "0.3.0"
 axum = { version = "=0.6.9", features = ["tokio", "json"] }
