@@ -1,7 +1,7 @@
 use std::{error::Error, net::SocketAddr, process::exit};
 
-use axum::{routing::get, Router};
-use cesrinf_web_wasmer::routes::index;
+use axum::{routing::{get, post}, Router};
+use cesrinf_web_wasmer::routes::{cesr, index};
 use tower_http::services::ServeDir;
 use tracing::info;
 
@@ -11,6 +11,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let router = Router::new()
         .route("/", get(index))
+        .route("/cesr", post(cesr))
         .nest_service("/static", ServeDir::new("../static"));
 
     let port = std::env::var("PORT").unwrap_or_else(|_| "80".to_string());
