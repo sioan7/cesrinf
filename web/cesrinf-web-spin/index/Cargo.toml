@@ -1,5 +1,6 @@
 [package]
-name = "cesrinf-web-spin"
+name = "index"
+authors = ["Stănilă Ioan <ioanstanilais@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
 
@@ -7,7 +8,7 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-cesrinf = { path = "../../cesrinf" }
+cesrinf = { path = "../../../cesrinf" }
 
 anyhow = "1"
 askama = { version = "0.12.1", features = ["markdown"] }

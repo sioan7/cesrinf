@@ -4,18 +4,38 @@ spin_manifest_version = 2
 name = "cesrinf-web-spin"
 version = "0.1.0"
 
+# index
+
 [[trigger.http]]
 route = "/..."
-component = "cesrinf-web-spin"
+component = "index"
+
+[component.index]
+source = "index/target/wasm32-wasi/release/index.wasm"
+[component.index.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "index"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+# cesr
+
+[[trigger.http]]
+route = "/cesr"
+component = "cesr"
+
+[component.cesr]
+source = "cesr/target/wasm32-wasi/release/cesr.wasm"
+allowed_outbound_hosts = []
+[component.cesr.build]
+command = "cargo build --target wasm32-wasi --release"
+workdir = "cesr"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+# spin-fileserver
 
 [[trigger.http]]
 route = "/static/..."
 component = "fileserver"
-
-[component.cesrinf-web-spin]
-source = "target/wasm32-wasi/release/cesrinf_web_spin.wasm"
-[component.cesrinf-web-spin.build]
-command = "cargo build --target wasm32-wasi --release"
 
 [component.fileserver]
 files = [{ source = "static/", destination = "/" }]
